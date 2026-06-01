@@ -1,6 +1,6 @@
-path,label,audio_id
-fire_0.wav,fire,test_000
-others_1.wav,others,test_001
-alarm_2.wav,alarm,test_002
-speech_3.wav,speech,test_003
-engine_4.wav,engine,test_004
+path,label,audio_id,dataset,source_filename,source_license
+esc50_crackling_fire.wav,crackling_fire,esc50_1_17150_A_12,ESC-50,1-17150-A-12.wav,CC-BY-NC-3.0
+esc50_siren.wav,siren,esc50_1_31482_A_42,ESC-50,1-31482-A-42.wav,CC-BY-NC-3.0
+esc50_engine.wav,engine,esc50_1_18527_A_44,ESC-50,1-18527-A-44.wav,CC-BY-NC-3.0
+esc50_dog.wav,dog,esc50_1_100032_A_0,ESC-50,1-100032-A-0.wav,CC-BY-NC-3.0
+esc50_rain.wav,rain,esc50_1_17367_A_10,ESC-50,1-17367-A-10.wav,CC-BY-NC-3.0
