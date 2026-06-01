@@ -7,10 +7,32 @@ OCC Data Synth is a SoundSpaces/Habitat-Sim based toolkit for acoustic scene sim
 
 The project also includes a reproducible 3D scene viewer for checking generated meshes, source/receiver positions, direct paths, and camera footprints.
 
+<p align="center">
+  <img src="docs/assets/scene_3d_screenshot.png" alt="Example 3D acoustic scene" width="86%">
+</p>
+
+## Highlights
+
+- SoundSpaces/Habitat-Sim is the acoustic backend; the legacy geometric code is used for scene generation and visualization, not as a simplified replacement.
+- FOA output is exported in ACN/SN3D channel order `[W, Y, Z, X]`.
+- The RIR bank path separates expensive acoustic simulation from cheap large-scale convolution.
+- The browser viewer loads the generated OBJ scene and checks receiver/source placement before scaling up a run.
+
+## Example Scene Checks
+
+The included figures are generated from the same procedural scene and placement code used by the SoundSpaces/Habitat-Sim runs. Blue marks the FOA receiver, red marks the source, and the line shows the direct acoustic path.
+
+| Baffle room | L-shaped corridor |
+| --- | --- |
+| <img src="docs/assets/scene_00_layout.png" alt="Baffle room layout" width="100%"> | <img src="docs/assets/scene_12_layout.png" alt="L-shaped corridor layout" width="100%"> |
+| Empty room | Obstacle forest |
+| <img src="docs/assets/scene_34_layout.png" alt="Empty room layout" width="100%"> | <img src="docs/assets/scene_55_layout.png" alt="Obstacle forest layout" width="100%"> |
+
 ## Repository Layout
 
 ```text
 configs/                 Example YAML configs
+docs/assets/             README figures
 examples/test_audio_bank Small mono-audio smoke-test manifest
 scripts/                 Public command-line entry points
 src/legacy_geometric/    Programmatic scene geometry, sampling, plots
