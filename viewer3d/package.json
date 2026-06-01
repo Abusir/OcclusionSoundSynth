@@ -1,0 +1,12 @@
+{
+  "name": "occ-data-synth-viewer3d",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "three": "^0.164.1"
+  },
+  "scripts": {
+    "serve": "python3 -m http.server 8765 --bind 127.0.0.1"
+  }
+}

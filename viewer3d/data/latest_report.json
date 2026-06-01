@@ -1,0 +1,41 @@
+{
+  "scene_id": "scene_01_baffle_room_v00",
+  "scene_index": 0,
+  "scene_type": "baffle_room",
+  "case": "los",
+  "source_xyz": [
+    3.9838052651647846,
+    5.779416105782244,
+    2.130649751745946
+  ],
+  "receiver_xyz": [
+    3.8456394149025517,
+    6.652318744572491,
+    1.1818541408013634
+  ],
+  "is_los": true,
+  "obstruction_count": 0,
+  "obstruction_types": [],
+  "audio_visual_mesh": "data/geometry/scene_01_baffle_room_v00.obj",
+  "layout_png": "data/figures/scene_01_baffle_room_v00_layout.png",
+  "config": {
+    "output_dir": "../outputs/visualization_smoke",
+    "viewer_root": "../viewer3d",
+    "scene_index": 0,
+    "case": "los",
+    "variants_per_type": 10,
+    "seed": 20260416,
+    "placement_seed": 20260416,
+    "visual_hfov_deg": 90.0,
+    "visual_yaw_offset_deg": 0.0,
+    "render_habitat_rgb": false,
+    "render_depth": false,
+    "sample_rate": 16000,
+    "ir_duration": 0.2,
+    "ray_count": 1000
+  },
+  "rgb_alignment": {
+    "rgb_output_is_mirrored_horizontally": false,
+    "camera_footprint_is_reversed_180_deg": false
+  }
+}

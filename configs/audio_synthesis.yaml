@@ -1,0 +1,15 @@
+output_dir: ../outputs/audio_synthesis_smoke
+audio_manifest: ../examples/test_audio_bank/manifest.csv
+source_dataset_name: example_test_audio_bank
+variants_per_type: 2
+num_examples: 1
+scene_sampling: random
+audio_sampling: cover_once_then_random
+sample_rate: 16000
+duration: 1.0
+ir_duration: 0.2
+ray_count: 1000
+thread_count: 1
+seed: 20260416
+no_progress_bar: true
+preserve_propagation_delay: false

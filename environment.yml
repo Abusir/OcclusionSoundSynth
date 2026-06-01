@@ -1,0 +1,21 @@
+name: occ_env
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.10
+  - numpy=1.26
+  - scipy
+  - matplotlib
+  - shapely
+  - pyyaml
+  - tqdm
+  - pillow
+  - imageio
+  - pip
+  - pip:
+      - soundfile==0.13.1
+      - numpy-quaternion
+      # Install these manually to match the verified occ_env:
+      # habitat-sim==0.2.2, habitat==0.2.2, sound-spaces==0.1.1,
+      # torch==2.2.2+cu118, torchvision==0.17.2+cu118.

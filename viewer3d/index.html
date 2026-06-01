@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>OCC Data Synth 3D Viewer</title>
+    <link rel="stylesheet" href="./styles.css" />
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "./node_modules/three/build/three.module.js"
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <main id="app">
+      <section id="viewport">
+        <canvas id="scene"></canvas>
+        <div id="hud">
+          <div class="title">OCC 3D Scene Viewer</div>
+          <div id="sceneMeta">Loading scene...</div>
+          <div id="status">Preparing renderer</div>
+        </div>
+        <div id="controls">
+          <button id="overviewBtn" type="button">Overview</button>
+          <button id="receiverBtn" type="button">Receiver View</button>
+          <button id="cameraBtn" type="button">Camera Footprint</button>
+          <button id="toggleRgbBtn" type="button">Aligned RGB</button>
+        </div>
+      </section>
+      <aside id="side">
+        <div class="panel">
+          <h2>Scene Catalog</h2>
+          <label class="selectLabel" for="sceneSelect">Select scene</label>
+          <select id="sceneSelect"></select>
+          <label class="checkLabel">
+            <input id="showOnlyImageScenes" type="checkbox" />
+            <span>Only scenes with SoundSpaces images</span>
+          </label>
+          <p id="catalogNote">Latest SoundSpaces report is loaded by default. Catalog entries use the same receiver-to-source camera definition in the browser, so every generated scene can be checked even when Habitat native rendering is unstable.</p>
+        </div>
+        <div class="panel">
+          <h1>Scene Check</h1>
+          <p id="summary">The 3D mesh, acoustic receiver, source, and visual footprint are loaded from the latest SoundSpaces verification output.</p>
+        </div>
+        <div class="panel">
+          <h2>Probe Camera</h2>
+          <canvas id="probePreview"></canvas>
+          <div class="probeControls">
+            <label>
+              <span>Yaw</span>
+              <input id="probeYaw" type="range" min="-180" max="180" step="1" value="180" />
+              <span id="probeYawValue">180 deg</span>
+            </label>
+            <label>
+              <span>Pitch</span>
+              <input id="probePitch" type="range" min="-80" max="80" step="1" value="0" />
+              <span id="probePitchValue">0 deg</span>
+            </label>
+            <div class="probeButtons">
+              <button id="probeReceiverBtn" type="button">Probe At Receiver</button>
+              <button id="syncMainBtn" type="button">Sync From Main View</button>
+            </div>
+          </div>
+          <p id="probeCaption">The live preview is rendered from the probe camera inside the browser scene.</p>
+          <p id="angleConvention">Yaw convention: 0 deg = +x, positive angles rotate counter-clockwise toward +y in the OCC xy plane.</p>
+        </div>
+        <div class="panel" id="rgbPanel">
+          <h2>SoundSpaces Image</h2>
+          <img id="rgbPreview" alt="SoundSpaces RGB render" />
+          <p id="rgbCaption">Aligned RGB</p>
+        </div>
+        <div class="panel" id="yawPanel">
+          <h2>SoundSpaces Yaw Sweep</h2>
+          <div id="yawGrid" class="yawGrid">
+            <figure class="yawCard">
+              <img id="yaw0" alt="SoundSpaces yaw 0" />
+              <figcaption id="yaw0Caption">yaw 0</figcaption>
+            </figure>
+            <figure class="yawCard">
+              <img id="yaw90" alt="SoundSpaces yaw 90" />
+              <figcaption id="yaw90Caption">yaw 90</figcaption>
+            </figure>
+            <figure class="yawCard">
+              <img id="yaw180" alt="SoundSpaces yaw 180" />
+              <figcaption id="yaw180Caption">yaw 180</figcaption>
+            </figure>
+            <figure class="yawCard">
+              <img id="yaw270" alt="SoundSpaces yaw 270" />
+              <figcaption id="yaw270Caption">yaw 270</figcaption>
+            </figure>
+          </div>
+          <p id="yawGridNote">These are the actual SoundSpaces renders from the yaw calibration sweep.</p>
+        </div>
+        <div class="panel">
+          <h2>What To Look At</h2>
+          <p>The yellow arrow is the top-down visual footprint used for diagnostics. Blue is the FOA receiver. Red is the source position. Drag to rotate. Use W/A/S/D to move, and Q/E to move down or up.</p>
+        </div>
+      </aside>
+    </main>
+    <script type="module" src="./main.js"></script>
+  </body>
+</html>

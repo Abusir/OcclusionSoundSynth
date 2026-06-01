@@ -1,0 +1,67 @@
+mtllib scene_01_baffle_room_v00.mtl
+o occ_synth_scene
+v 7.171138 0.000000 0.000000
+v 0.000000 0.000000 0.000000
+v 0.000000 0.000000 7.286574
+v 7.171138 0.000000 7.286574
+v 7.171138 3.042449 0.000000
+v 0.000000 3.042449 0.000000
+v 0.000000 3.042449 7.286574
+v 7.171138 3.042449 7.286574
+g boundary_floor
+usemtl floor
+f 1 2 3
+f 4 1 3
+g boundary_ceiling
+usemtl ceiling
+f 7 6 5
+f 7 5 8
+g boundary_side
+usemtl wall
+f 1 2 6
+f 1 6 5
+g boundary_side
+usemtl wall
+f 2 3 7
+f 2 7 6
+g boundary_side
+usemtl wall
+f 3 4 8
+f 3 8 7
+g boundary_side
+usemtl wall
+f 4 1 5
+f 4 5 8
+v 3.104534 0.000000 1.981850
+v 2.921829 0.000000 1.981850
+v 2.921829 0.000000 7.286574
+v 3.104534 0.000000 7.286574
+v 3.104534 3.042449 1.981850
+v 2.921829 3.042449 1.981850
+v 2.921829 3.042449 7.286574
+v 3.104534 3.042449 7.286574
+g obstacle_00_floor
+usemtl floor
+f 9 10 11
+f 12 9 11
+g obstacle_00_ceiling
+usemtl ceiling
+f 15 14 13
+f 15 13 16
+g obstacle_00_side
+usemtl obstacle
+f 9 10 14
+f 9 14 13
+g obstacle_00_side
+usemtl obstacle
+f 10 11 15
+f 10 15 14
+g obstacle_00_side
+usemtl obstacle
+f 11 12 16
+f 11 16 15
+g obstacle_00_side
+usemtl obstacle
+f 12 9 13
+f 12 13 16
+# semantic_ceiling_material ceiling

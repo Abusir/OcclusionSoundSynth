@@ -1,0 +1,12 @@
+output_dir: ../outputs/rir_bank_smoke
+scenarios: 2
+num_rirs: 2
+scene_sampling: stratified
+sample_rate: 16000
+ir_duration: 0.2
+direct_ray_count: 500
+indirect_ray_count: 1000
+compute_metrics: true
+seed: 42
+preserve_propagation_delay: false
+rir_format: both
