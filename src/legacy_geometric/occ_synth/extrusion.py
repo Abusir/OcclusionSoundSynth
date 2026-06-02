@@ -145,6 +145,27 @@ def _add_floor_polygon(
     writer.add_triangle_faces(floor_tris, floor_material, f"{group_prefix}_floor")
 
 
+def _add_outdoor_open_boundary(
+    writer: ObjWriter,
+    polygon: Polygon,
+    height: float,
+    floor_material: str,
+    side_material: str,
+    ceiling_material: str,
+) -> None:
+    """Export a finite outdoor domain with absorbing side and top faces."""
+
+    _add_extruded_polygon(
+        writer=writer,
+        polygon=polygon,
+        height=height,
+        side_material=side_material,
+        group_prefix="boundary",
+        floor_material=floor_material,
+        ceiling_material=ceiling_material,
+    )
+
+
 def export_scene_obj(scene: Scene2D, output_dir: Path) -> dict[str, str]:
     output_dir.mkdir(parents=True, exist_ok=True)
     obj_path = output_dir / f"{scene.scene_id}.obj"
@@ -159,13 +180,12 @@ def export_scene_obj(scene: Scene2D, output_dir: Path) -> dict[str, str]:
     obstacle_assignment = material_assignment["obstacle"]
     obstacle_mat = obstacle_assignment or "solid_occluder"
     if scene.is_outdoor:
-        _add_extruded_polygon(
+        _add_outdoor_open_boundary(
             writer,
             scene.boundary,
             scene.height_m,
-            boundary_mat,
-            "boundary",
             floor_material=floor_mat,
+            side_material=boundary_mat,
             ceiling_material=ceiling_mat,
         )
         writer.lines.append("# outdoor scene: finite domain with strongly absorbing side and top boundaries")
