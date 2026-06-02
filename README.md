@@ -17,26 +17,49 @@ The project also includes a reproducible 3D scene viewer for checking generated 
 - FOA output is exported in ACN/SN3D channel order `[W, Y, Z, X]`.
 - The RIR bank path separates expensive acoustic simulation from cheap large-scale convolution.
 - The browser viewer loads the generated OBJ scene and checks receiver/source placement before scaling up a run.
-- Outdoor/open scenes are exported with open acoustic boundaries by default: only the ground plane is exported for the scene boundary, while indoor scenes keep walls and ceilings. This avoids treating `open_field` as a closed box when the local SoundSpaces build runs non-semantic OBJ meshes.
+- Outdoor/open scenes are exported as finite acoustic domains with strongly absorbing side and top boundaries. `open_field` and `obstacle_forest` therefore contain real `sky_absorber` boundary faces in the OBJ, not only material metadata.
 
 ## Acoustic Boundary And Materials
 
-The verified local SoundSpaces/Habitat-Sim stack loads the programmatic OBJ scenes as non-semantic meshes. In this mode, Habitat logs that semantic annotations are absent or materials are disabled, so the backend does not consume per-surface absorption/transmission coefficients from the OBJ material names.
+The default workflow uses the official RLR/SoundSpaces-style material database written at runtime as `reports/occ_rlr_materials.json`. Materials are enabled by default through `SoundSpacesConfig.enable_materials=True`; generation scripts pass `audio_materials_json` to the backend unless `--disable-materials` is explicitly set.
 
-To keep the default workflow physically consistent and runnable in this environment, the exporter encodes open boundaries geometrically:
+Programmatic OBJ scenes are converted to Habitat semantic stages before rendering. The backend writes `.stage_config.json`, `.scn`, and `_semantic.ply` files from OBJ `usemtl` labels, then calls `AudioSensor.setAudioMaterialsJSON(...)` when supported by the local SoundSpaces/Habitat-Sim build.
+
+Outdoor scenes use a finite-domain approximation of open propagation:
 
 - Indoor scenes export floor, wall sides, and ceiling.
-- Outdoor scenes (`open_field`, `obstacle_forest`) export the ground plane but do not export boundary walls or a ceiling.
-- Outdoor obstacles are still exported as geometry.
+- `open_field` exports a grass ground plane plus real side and ceiling faces using `sky_absorber`.
+- `obstacle_forest` exports a soil ground plane, real side and ceiling faces using `sky_absorber`, and obstacle geometry using `solid_occluder`.
 
-A deterministic RLR material database is written by the generation scripts for documentation and future semantic-material runs, but it is not enabled by default because the current generated OBJ scenes do not include the semantic scene descriptor required by this Habitat/SoundSpaces build. Do not describe the default non-semantic run as using explicit wall/floor/ceiling absorption coefficients.
-
-The fixed project-side mapping is documented in `material_assignment_table.md`. The same mapping is also written at runtime as `reports/occ_scene_material_assignments.json`:
+The fixed mapping is documented in `material_assignment_table.md`. The same mapping is also written at runtime as `reports/occ_scene_material_assignments.json`:
 
 - `baffle_room`: indoor hard floor, reflective wall, reflective ceiling, solid occluder.
 - `l_shape_corridor`, `t_shape_corridor`, `empty_room`: indoor hard floor, reflective wall, reflective ceiling.
-- `open_field`: outdoor ground plus semantic open boundary/open ceiling mapped to `sky_absorber`.
-- `obstacle_forest`: outdoor ground, solid occluders, semantic open boundary/open ceiling mapped to `sky_absorber`.
+- `open_field`: `outdoor_ground_grass` floor, `sky_absorber` side boundary, `sky_absorber` ceiling.
+- `obstacle_forest`: `outdoor_ground_soil` floor, `sky_absorber` side boundary, `sky_absorber` ceiling, `solid_occluder` obstacles.
+
+A quick end-to-end material check:
+
+```bash
+MPLCONFIGDIR=/tmp/occ_mpl NUMBA_DISABLE_JIT=1 PYTHONPATH=src:. conda run --no-capture-output -n occ_env \
+  python src/soundspaces_adapter/verify_open_boundaries.py \
+  --output-dir outputs/open_boundary_check \
+  --render \
+  --sample-rate 16000 \
+  --ir-duration 0.1
+```
+
+The generated outdoor OBJ files should include real face records after `usemtl sky_absorber`, for example:
+
+```text
+g boundary_ceiling
+usemtl sky_absorber
+f ...
+
+g boundary_side
+usemtl sky_absorber
+f ...
+```
 
 ## Example Scene Checks
 
@@ -99,10 +122,33 @@ Audio manifests may be CSV/TSV/JSON. CSV rows should contain at least `path,labe
 
 ## Direct Audio Synthesis
 
-Smoke-test command:
+Smoke-test command using the default material chain:
 
 ```bash
-PYTHONPATH=src python scripts/synthesize_audio.py --config configs/audio_synthesis.yaml
+MPLCONFIGDIR=/tmp/occ_mpl NUMBA_DISABLE_JIT=1 conda run --no-capture-output -n occ_env \
+  python scripts/synthesize_audio.py \
+  --config configs/audio_synthesis.yaml \
+  --set enable_materials=true
+```
+
+Direct command for a fire-sound manifest:
+
+```bash
+MPLCONFIGDIR=/tmp/occ_mpl NUMBA_DISABLE_JIT=1 PYTHONPATH=src:. conda run --no-capture-output -n occ_env \
+  python src/soundspaces_adapter/build_dataset.py \
+  --output-dir outputs/fire_audio_dataset \
+  --audio-manifest /path/to/your/fire_audio_manifest.csv \
+  --source-dataset-name fire_sound_dataset_v2 \
+  --variants-per-type 10 \
+  --num-examples 1000 \
+  --scene-sampling random \
+  --audio-sampling cover_once_then_random \
+  --sample-rate 16000 \
+  --duration source \
+  --ir-duration 0.2 \
+  --ray-count 1000 \
+  --thread-count 1 \
+  --no-progress-bar
 ```
 
 Main outputs:
@@ -113,7 +159,7 @@ Main outputs:
 - `geometry/*.obj`: generated Habitat mesh.
 - `figures/*_layout.png`: top-down scene check.
 
-Increase `num_examples`, `variants_per_type`, and ray counts in `configs/audio_synthesis.yaml` for medium-scale generation.
+Increase `num_examples`, `variants_per_type`, and ray counts in `configs/audio_synthesis.yaml` for medium-scale generation. Do not pass `--disable-materials` for material-correct synthesis.
 
 ## RIR And Single-Impulse Analysis
 
@@ -130,10 +176,31 @@ The script writes per-case RIR metrics, impulse-output WAV files, RIR energy dec
 
 ## Batch RIR Generation
 
-Smoke-test command:
+Smoke-test command using the default material chain:
 
 ```bash
-PYTHONPATH=src python scripts/generate_rirs.py --config configs/rir_generation.yaml
+MPLCONFIGDIR=/tmp/occ_mpl NUMBA_DISABLE_JIT=1 conda run --no-capture-output -n occ_env \
+  python scripts/generate_rirs.py \
+  --config configs/rir_generation.yaml \
+  --set enable_materials=true
+```
+
+Direct command for a reusable RIR bank:
+
+```bash
+MPLCONFIGDIR=/tmp/occ_mpl NUMBA_DISABLE_JIT=1 PYTHONPATH=src:. conda run --no-capture-output -n occ_env \
+  python src/run_rir_bank.py \
+  --output-dir outputs/fire_occ_rir_bank \
+  --scenarios 60 \
+  --rirs-per-scenario 20 \
+  --scene-sampling stratified \
+  --sample-rate 16000 \
+  --ir-duration 0.2 \
+  --direct-ray-count 500 \
+  --indirect-ray-count 1000 \
+  --rir-format both \
+  --compute-metrics \
+  --seed 42
 ```
 
 Main outputs:
