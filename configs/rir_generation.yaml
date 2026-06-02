@@ -9,4 +9,5 @@ indirect_ray_count: 1000
 compute_metrics: true
 seed: 42
 preserve_propagation_delay: false
+enable_materials: true
 rir_format: both

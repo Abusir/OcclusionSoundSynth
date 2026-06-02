@@ -13,3 +13,4 @@ thread_count: 1
 seed: 20260416
 no_progress_bar: true
 preserve_propagation_delay: false
+enable_materials: true

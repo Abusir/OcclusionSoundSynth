@@ -43,6 +43,8 @@ def main() -> int:
     append_option(cli, "--max-attempts", cfg.get("max_attempts", 160))
     append_option(cli, "--onset-threshold-db", cfg.get("onset_threshold_db", -80.0))
     cli += bool_flag("--preserve-propagation-delay", bool(cfg.get("preserve_propagation_delay", False)))
+    if not bool(cfg.get("enable_materials", True)):
+        cli.append("--disable-materials")
     if bool(cfg.get("no_overview", False)):
         cli.append("--no-overview")
     if bool(cfg.get("no_progress_bar", True)):

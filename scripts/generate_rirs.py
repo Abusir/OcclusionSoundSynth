@@ -39,6 +39,8 @@ def main() -> int:
     append_option(cli, "--rir-format", cfg.get("rir_format", "both"))
     append_option(cli, "--seed", cfg.get("seed", 42))
     cli += bool_flag("--preserve-propagation-delay", bool(cfg.get("preserve_propagation_delay", False)))
+    if not bool(cfg.get("enable_materials", True)):
+        cli.append("--disable-materials")
     cli += bool_flag("--compute-metrics", bool(cfg.get("compute_metrics", True)))
     return int(rir_bank_main(cli))
 
