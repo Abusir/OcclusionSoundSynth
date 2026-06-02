@@ -17,6 +17,26 @@ The project also includes a reproducible 3D scene viewer for checking generated 
 - FOA output is exported in ACN/SN3D channel order `[W, Y, Z, X]`.
 - The RIR bank path separates expensive acoustic simulation from cheap large-scale convolution.
 - The browser viewer loads the generated OBJ scene and checks receiver/source placement before scaling up a run.
+- Outdoor/open scenes are exported with open acoustic boundaries by default: only the ground plane is exported for the scene boundary, while indoor scenes keep walls and ceilings. This avoids treating `open_field` as a closed box when the local SoundSpaces build runs non-semantic OBJ meshes.
+
+## Acoustic Boundary And Materials
+
+The verified local SoundSpaces/Habitat-Sim stack loads the programmatic OBJ scenes as non-semantic meshes. In this mode, Habitat logs that semantic annotations are absent or materials are disabled, so the backend does not consume per-surface absorption/transmission coefficients from the OBJ material names.
+
+To keep the default workflow physically consistent and runnable in this environment, the exporter encodes open boundaries geometrically:
+
+- Indoor scenes export floor, wall sides, and ceiling.
+- Outdoor scenes (`open_field`, `obstacle_forest`) export the ground plane but do not export boundary walls or a ceiling.
+- Outdoor obstacles are still exported as geometry.
+
+A deterministic RLR material database is written by the generation scripts for documentation and future semantic-material runs, but it is not enabled by default because the current generated OBJ scenes do not include the semantic scene descriptor required by this Habitat/SoundSpaces build. Do not describe the default non-semantic run as using explicit wall/floor/ceiling absorption coefficients.
+
+The fixed project-side mapping is documented in `material_assignment_table.md`. The same mapping is also written at runtime as `reports/occ_scene_material_assignments.json`:
+
+- `baffle_room`: indoor hard floor, reflective wall, reflective ceiling, solid occluder.
+- `l_shape_corridor`, `t_shape_corridor`, `empty_room`: indoor hard floor, reflective wall, reflective ceiling.
+- `open_field`: outdoor ground plus semantic open boundary/open ceiling mapped to `sky_absorber`.
+- `obstacle_forest`: outdoor ground, solid occluders, semantic open boundary/open ceiling mapped to `sky_absorber`.
 
 ## Example Scene Checks
 
@@ -98,6 +118,19 @@ Main outputs:
 - `figures/*_layout.png`: top-down scene check.
 
 Increase `num_examples`, `variants_per_type`, and ray counts in `configs/audio_synthesis.yaml` for medium-scale generation.
+
+## RIR And Single-Impulse Analysis
+
+For propagation analysis, render or reuse a RIR bank and then analyze a 10-second single-impulse probe:
+
+```bash
+PYTHONPATH=src python src/soundspaces_adapter/analyze_rir_impulse_probe.py \
+  --input-dir outputs/flat_spectrum_probe_10s_open_boundary \
+  --output-dir outputs/rir_impulse_analysis_open_boundary \
+  --sample-rate 16000 --duration 10 --impulse-time 0.5
+```
+
+The script writes per-case RIR metrics, impulse-output WAV files, RIR energy decay plots, impulse waveform plots, and scene-type summaries. The impulse is placed inside the first second so propagation delay and tail energy can be inspected cleanly.
 
 ## Batch RIR Generation
 

@@ -6,14 +6,23 @@ from shapely.geometry import Polygon
 from shapely.ops import triangulate
 
 from .scene_generator import Scene2D
+from soundspaces_adapter.material_database import scene_material_assignment
 
 
 MATERIALS = {
     "floor": (0.55, 0.55, 0.50),
     "ceiling": (0.78, 0.80, 0.82),
     "outdoor_ceiling": (0.35, 0.55, 0.80),
+    "sky_absorber": (0.35, 0.55, 0.80),
     "wall": (0.70, 0.72, 0.74),
     "obstacle": (0.35, 0.34, 0.31),
+    "indoor_floor_hard": (0.55, 0.55, 0.50),
+    "outdoor_ground": (0.44, 0.50, 0.38),
+    "outdoor_ground_grass": (0.30, 0.48, 0.22),
+    "outdoor_ground_soil": (0.42, 0.34, 0.24),
+    "indoor_wall_reflective": (0.70, 0.72, 0.74),
+    "indoor_ceiling_reflective": (0.78, 0.80, 0.82),
+    "solid_occluder": (0.35, 0.34, 0.31),
 }
 
 
@@ -116,6 +125,26 @@ def _add_extruded_polygon(
         )
 
 
+def _add_floor_polygon(
+    writer: ObjWriter,
+    polygon: Polygon,
+    group_prefix: str,
+    floor_material: str = "floor",
+) -> None:
+    coords = _ring_coords(polygon)
+    vertices = [writer.add_vertex(x, y, 0.0) for x, y in coords]
+    coord_to_vertex = {_coord_key(*coords[i]): vertices[i] for i in range(len(coords))}
+
+    floor_tris: list[list[int]] = []
+    for tri in triangulate(polygon):
+        if not polygon.covers(tri.representative_point()):
+            continue
+        tri_coords = _ring_coords(tri)
+        floor_tris.append([coord_to_vertex[_coord_key(x, y)] for x, y in reversed(tri_coords)])
+
+    writer.add_triangle_faces(floor_tris, floor_material, f"{group_prefix}_floor")
+
+
 def export_scene_obj(scene: Scene2D, output_dir: Path) -> dict[str, str]:
     output_dir.mkdir(parents=True, exist_ok=True)
     obj_path = output_dir / f"{scene.scene_id}.obj"
@@ -123,15 +152,41 @@ def export_scene_obj(scene: Scene2D, output_dir: Path) -> dict[str, str]:
     _write_materials(mtl_path)
     writer = ObjWriter(obj_path, mtl_path.name)
 
-    ceiling_mat = "outdoor_ceiling" if scene.is_outdoor else "ceiling"
-    _add_extruded_polygon(writer, scene.boundary, scene.height_m, "wall", "boundary", ceiling_material=ceiling_mat)
+    material_assignment = scene_material_assignment(scene.scene_type)
+    floor_mat = material_assignment["floor"] or "floor"
+    boundary_mat = material_assignment["open_boundary" if scene.is_outdoor else "wall"] or "wall"
+    ceiling_mat = material_assignment["open_ceiling" if scene.is_outdoor else "ceiling"] or "ceiling"
+    obstacle_assignment = material_assignment["obstacle"]
+    obstacle_mat = obstacle_assignment or "solid_occluder"
     if scene.is_outdoor:
-        writer.lines.append("# outdoor scene: ceiling material is semantic sky/absorber")
+        _add_floor_polygon(writer, scene.boundary, "boundary", floor_material=floor_mat)
+        writer.lines.append("# outdoor scene: open acoustic boundary; only the ground plane is exported")
     for idx, obstacle in enumerate(scene.obstacles):
         obstacle_height = scene.height_m if not scene.is_outdoor else min(scene.height_m, 3.5)
-        _add_extruded_polygon(writer, obstacle, obstacle_height, "obstacle", f"obstacle_{idx:02d}")
+        _add_extruded_polygon(
+            writer,
+            obstacle,
+            obstacle_height,
+            obstacle_mat,
+            f"obstacle_{idx:02d}",
+            floor_material=obstacle_mat,
+            ceiling_material=obstacle_mat,
+        )
+    if not scene.is_outdoor:
+        _add_extruded_polygon(
+            writer,
+            scene.boundary,
+            scene.height_m,
+            boundary_mat,
+            "boundary",
+            floor_material=floor_mat,
+            ceiling_material=ceiling_mat,
+        )
 
     # Keep a searchable material marker for validators and downstream tools.
+    writer.lines.append(f"# semantic_floor_material {floor_mat}")
+    writer.lines.append(f"# semantic_boundary_material {boundary_mat}")
     writer.lines.append(f"# semantic_ceiling_material {ceiling_mat}")
+    writer.lines.append(f"# semantic_obstacle_material {obstacle_assignment or 'none'}")
     writer.save()
     return {"obj": str(obj_path), "mtl": str(mtl_path)}

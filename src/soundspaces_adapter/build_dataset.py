@@ -35,13 +35,14 @@ from legacy_geometric.occ_synth.visualization import plot_catalog_overview, plot
 
 from soundspaces_adapter.backend import SoundSpacesBackend, check_soundspaces_available
 from soundspaces_adapter.config import SoundSpacesConfig
+from soundspaces_adapter.material_database import write_occ_material_database, write_scene_material_assignments
 from soundspaces_adapter.materials import write_material_map
 from soundspaces_adapter.validation import validate_rir_physics
 
 
 def parse_args(argv: list[str]) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Build a labeled SoundSpaces dataset from OCC scenes and dry audio manifest.")
-    parser.add_argument("--output-dir", type=Path, default=Path("outputs/dataset"))
+    parser.add_argument("--output-dir", type=Path, default=Path("generated_soundspaces_runs/dataset"))
     parser.add_argument("--audio-manifest", type=Path, required=True)
     parser.add_argument("--source-dataset-name", type=str, default="fire_sound_dataset_v2")
     parser.add_argument("--variants-per-type", type=int, default=10)
@@ -68,6 +69,11 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
     parser.add_argument("--max-attempts", type=int, default=160)
     parser.add_argument("--preserve-propagation-delay", action="store_true", help="Keep physical time-of-flight silence at the output start.")
     parser.add_argument("--onset-threshold-db", type=float, default=-80.0)
+    parser.add_argument(
+        "--enable-materials",
+        action="store_true",
+        help="Enable SoundSpaces material database loading. Requires a semantic mesh/descriptor for generated OBJ scenes.",
+    )
     parser.add_argument("--no-overview", action="store_true")
     parser.add_argument("--no-progress-bar", action="store_true")
     parser.add_argument("--resume", action="store_true", help="Skip examples whose label, FOA wav, and mono wav already exist.")
@@ -327,6 +333,10 @@ def main(argv: list[str] | None = None) -> int:
         dataset_name=audio_library.dataset_name,
         manifest_path=str(args.audio_manifest.resolve()),
     )
+    material_db_path = report_dir / "occ_rlr_materials.json"
+    write_occ_material_database(material_db_path)
+    material_assignment_path = report_dir / "occ_scene_material_assignments.json"
+    write_scene_material_assignments(material_assignment_path)
     config = SoundSpacesConfig(
         sample_rate=args.sample_rate,
         ir_duration_s=args.ir_duration,
@@ -335,7 +345,8 @@ def main(argv: list[str] | None = None) -> int:
         output_directory=str(out),
         align_output_onset=not args.preserve_propagation_delay,
         onset_threshold_db=args.onset_threshold_db,
-        enable_materials=False,
+        enable_materials=args.enable_materials,
+        audio_materials_json=str(material_db_path) if args.enable_materials else None,
         enable_rgb=False,
         enable_depth=False,
     )

@@ -3,33 +3,11 @@ from __future__ import annotations
 from pathlib import Path
 import json
 
+from soundspaces_adapter.material_database import MATERIAL_SPECS, SCENE_MATERIAL_ASSIGNMENTS
 
 DEFAULT_MATERIAL_MAP = {
-    "floor": {
-        "description": "hard floor, moderate reflection",
-        "absorption": [0.18, 0.15, 0.12, 0.10],
-        "scattering": 0.10,
-    },
-    "ceiling": {
-        "description": "painted ceiling",
-        "absorption": [0.25, 0.20, 0.18, 0.15],
-        "scattering": 0.12,
-    },
-    "outdoor_ceiling": {
-        "description": "semantic sky absorber for open scenes",
-        "absorption": [0.95, 0.95, 0.95, 0.95],
-        "scattering": 0.00,
-    },
-    "wall": {
-        "description": "rigid wall or corridor boundary",
-        "absorption": [0.12, 0.10, 0.08, 0.08],
-        "scattering": 0.08,
-    },
-    "obstacle": {
-        "description": "solid obstacle, baffle, tree trunk, or column",
-        "absorption": [0.20, 0.17, 0.14, 0.12],
-        "scattering": 0.18,
-    },
+    "material_specs": MATERIAL_SPECS,
+    "scene_material_assignments": SCENE_MATERIAL_ASSIGNMENTS,
 }
 
 

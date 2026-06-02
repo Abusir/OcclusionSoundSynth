@@ -50,6 +50,11 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--rir-format", choices=["both", "foa"], default="both")
     parser.add_argument("--mono-from-foa-w", action="store_true", default=True)
     parser.add_argument("--compute-metrics", action="store_true")
+    parser.add_argument(
+        "--enable-materials",
+        action="store_true",
+        help="Enable SoundSpaces material database loading. Requires a semantic mesh/descriptor for generated OBJ scenes.",
+    )
     parser.add_argument("--seed", type=int, default=42)
     return parser.parse_args(argv)
 
@@ -198,6 +203,11 @@ def main(argv: list[str] | None = None) -> int:
     from legacy_geometric.occ_synth.scene_generator import generate_all_scenes
     from soundspaces_adapter.backend import SoundSpacesBackend, check_soundspaces_available
     from soundspaces_adapter.config import SoundSpacesConfig
+    from soundspaces_adapter.material_database import (
+        scene_material_assignment,
+        write_occ_material_database,
+        write_scene_material_assignments,
+    )
 
     if args.scenarios <= 0:
         raise ValueError("--scenarios must be positive")
@@ -221,6 +231,10 @@ def main(argv: list[str] | None = None) -> int:
         print(json.dumps(report, ensure_ascii=False, indent=2))
         return 2
 
+    material_db_path = reports_dir / "occ_rlr_materials.json"
+    write_occ_material_database(material_db_path)
+    material_assignment_path = reports_dir / "occ_scene_material_assignments.json"
+    write_scene_material_assignments(material_assignment_path)
     config = SoundSpacesConfig(
         sample_rate=args.sample_rate,
         ir_duration_s=args.ir_duration,
@@ -231,7 +245,8 @@ def main(argv: list[str] | None = None) -> int:
         output_directory=str(out),
         channel_type="Ambisonics",
         channel_count=4,
-        enable_materials=False,
+        enable_materials=args.enable_materials,
+        audio_materials_json=str(material_db_path) if args.enable_materials else None,
         enable_rgb=False,
         enable_depth=False,
     )
@@ -301,6 +316,13 @@ def main(argv: list[str] | None = None) -> int:
                 "split": "rir_bank",
                 "random_seed": row_seed,
                 "simulator_version": simulator_version(availability),
+                "floor_material": scene_material_assignment(scene.scene_type)["floor"],
+                "wall_material": scene_material_assignment(scene.scene_type)["wall"],
+                "ceiling_material": scene_material_assignment(scene.scene_type)["ceiling"],
+                "obstacle_material": scene_material_assignment(scene.scene_type)["obstacle"] or "",
+                "open_boundary_material": scene_material_assignment(scene.scene_type)["open_boundary"] or "",
+                "open_ceiling_material": scene_material_assignment(scene.scene_type)["open_ceiling"] or "",
+                "material_source": "facebookresearch/rlr-audio-propagation mp3d_material_config.json",
                 "sample_rate": args.sample_rate,
                 "ir_duration": args.ir_duration,
                 "ray_count": args.indirect_ray_count,

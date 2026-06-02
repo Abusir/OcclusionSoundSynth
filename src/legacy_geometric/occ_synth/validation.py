@@ -88,7 +88,7 @@ def validate_obj(obj_path: Path) -> list[str]:
     if not obj_path.exists():
         return [f"{obj_path}: missing OBJ"]
     text = obj_path.read_text(encoding="utf-8")
-    for marker in ["usemtl floor", "usemtl wall", "g boundary_side", "semantic_ceiling_material"]:
+    for marker in ["g boundary_floor", "semantic_floor_material", "semantic_boundary_material", "semantic_ceiling_material"]:
         if marker not in text:
             errors.append(f"{obj_path.name}: missing marker {marker}")
     return errors

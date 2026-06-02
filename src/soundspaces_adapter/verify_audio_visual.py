@@ -178,7 +178,8 @@ def main() -> int:
         visual_height=args.height,
         visual_pitch_deg=args.visual_pitch,
         visual_yaw_offset_deg=args.visual_yaw_offset,
-        audio_materials_json=str(material_db_path),
+        enable_materials=False,
+        audio_materials_json=None,
     )
     cfg.save_json(report_dir / "soundspaces_av_config.json")
     try:
@@ -245,8 +246,9 @@ def main() -> int:
                 "to Habitat RGB/depth sensors. Vertex positions and metric geometry are unchanged."
             ),
             "semantic_material_note": (
-                "The RLR material database is written and connected. Habitat-Sim will still use default material "
-                "until generated scenes also provide a semantic mesh/semantic scene descriptor."
+                "The RLR material database is written for inspection, but it is not connected by default. "
+                "Generated programmatic OBJ scenes need a semantic mesh/semantic scene descriptor before "
+                "explicit material coefficients can be enabled safely."
             ),
             "observations": sorted(observations.keys()),
             "rir_shape": list(rir.shape),

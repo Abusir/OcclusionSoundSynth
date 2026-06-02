@@ -16,6 +16,7 @@ from .scene_generator import Scene2D, generate_all_scenes
 from .source_config import SourceConfig
 from .validation import summarize_validation, validate_catalog, validate_label, validate_obj
 from .visualization import plot_catalog_overview, plot_scene, plot_waveform
+from soundspaces_adapter.material_database import scene_material_report
 
 
 def _round_floats(value: Any, ndigits: int = 6) -> Any:
@@ -31,6 +32,7 @@ def _round_floats(value: Any, ndigits: int = 6) -> Any:
 
 
 def scene_geometry_record(scene: Scene2D) -> dict[str, Any]:
+    material_report = scene_material_report(scene.scene_type)
     return {
         "scene_id": scene.scene_id,
         "scene_index": scene.scene_index,
@@ -43,6 +45,8 @@ def scene_geometry_record(scene: Scene2D) -> dict[str, Any]:
         "walkable_area_m2": scene.walkable_area.area,
         "bounds_xy_m": list(scene.bounds),
         "params": scene.params,
+        "material_assignment": material_report["assignment"],
+        "material_specs": material_report["materials"],
         "boundary_geojson": mapping(scene.boundary),
         "obstacles_geojson": [mapping(obs) for obs in scene.obstacles],
     }
@@ -57,6 +61,7 @@ def make_label(
     source_config: SourceConfig,
     audio_item: AudioItem | None = None,
 ) -> dict[str, Any]:
+    material_report = scene_material_report(scene.scene_type)
     audio_input = None
     if audio_item is not None:
         audio_input = {
@@ -81,6 +86,15 @@ def make_label(
                 "walkable_area_m2": scene.walkable_area.area,
                 "bounds_xy_m": list(scene.bounds),
                 "params": scene.params,
+            },
+            "materials": {
+                "source": "facebookresearch/rlr-audio-propagation mp3d_material_config.json",
+                "assignment": material_report["assignment"],
+                "specs": material_report["materials"],
+                "runtime_note": (
+                    "Explicit material coefficients require a semantic scene descriptor. "
+                    "In the default non-semantic OBJ path, outdoor open boundaries are handled geometrically."
+                ),
             },
             "receiver": {
                 "format": "FOA",
