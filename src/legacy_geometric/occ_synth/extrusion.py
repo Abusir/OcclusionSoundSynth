@@ -159,8 +159,16 @@ def export_scene_obj(scene: Scene2D, output_dir: Path) -> dict[str, str]:
     obstacle_assignment = material_assignment["obstacle"]
     obstacle_mat = obstacle_assignment or "solid_occluder"
     if scene.is_outdoor:
-        _add_floor_polygon(writer, scene.boundary, "boundary", floor_material=floor_mat)
-        writer.lines.append("# outdoor scene: open acoustic boundary; only the ground plane is exported")
+        _add_extruded_polygon(
+            writer,
+            scene.boundary,
+            scene.height_m,
+            boundary_mat,
+            "boundary",
+            floor_material=floor_mat,
+            ceiling_material=ceiling_mat,
+        )
+        writer.lines.append("# outdoor scene: finite domain with strongly absorbing side and top boundaries")
     for idx, obstacle in enumerate(scene.obstacles):
         obstacle_height = scene.height_m if not scene.is_outdoor else min(scene.height_m, 3.5)
         _add_extruded_polygon(
