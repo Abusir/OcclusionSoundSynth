@@ -60,9 +60,9 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--thread-count", type=int, default=1)
     parser.add_argument("--onset-threshold-db", type=float, default=-80.0)
     parser.add_argument(
-        "--enable-materials",
+        "--disable-materials",
         action="store_true",
-        help="Enable SoundSpaces material database loading. Requires a semantic mesh/descriptor for generated OBJ scenes.",
+        help="Disable the default official RLR material database path.",
     )
     parser.add_argument(
         "--preserve-propagation-delay",
@@ -396,8 +396,8 @@ def main(argv: list[str] | None = None) -> int:
         output_directory=str(out),
         align_output_onset=not args.preserve_propagation_delay,
         onset_threshold_db=args.onset_threshold_db,
-        enable_materials=args.enable_materials,
-        audio_materials_json=str(material_db_path) if args.enable_materials else None,
+        enable_materials=not args.disable_materials,
+        audio_materials_json=str(material_db_path) if not args.disable_materials else None,
         enable_rgb=False,
         enable_depth=False,
     )

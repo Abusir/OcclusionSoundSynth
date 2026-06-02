@@ -10,6 +10,8 @@ import soundfile as sf
 
 from .config import SoundSpacesConfig
 from .coordinate import occ_to_habitat
+from .material_database import write_occ_material_database
+from .semantic_stage import write_semantic_stage_for_obj
 
 
 class SoundSpacesUnavailableError(RuntimeError):
@@ -60,6 +62,15 @@ class SoundSpacesBackend:
                 "habitat_sim is not importable. Install SoundSpaces 2.0/Habitat-Sim before using the real backend."
             ) from exc
         self.habitat_sim = habitat_sim
+
+    def _audio_materials_json(self, output_dir: Path) -> str | None:
+        if not self.config.enable_materials:
+            return None
+        if self.config.audio_materials_json:
+            return self.config.audio_materials_json
+        path = output_dir / "occ_rlr_materials.json"
+        write_occ_material_database(path)
+        return str(path)
 
     def _make_acoustic_config(self) -> Any:
         hs = self.habitat_sim
@@ -265,6 +276,9 @@ class SoundSpacesBackend:
             raise SoundSpacesUnavailableError("This habitat_sim build does not expose Simulator.")
         if not scene_mesh_path.exists():
             raise FileNotFoundError(scene_mesh_path)
+        audio_materials_json = self._audio_materials_json(output_dir)
+        if audio_materials_json and scene_mesh_path.suffix.lower() == ".obj":
+            scene_mesh_path = write_semantic_stage_for_obj(scene_mesh_path)
 
         sim_cfg = hs.SimulatorConfiguration()
         sim_cfg.scene_id = str(scene_mesh_path)
@@ -285,8 +299,8 @@ class SoundSpacesBackend:
                 self._set_camera_light(sim)
             self._set_agent_pose(sim, source_occ_xyz, receiver_occ_xyz, False)
             audio_sensor = self._add_audio_sensor(sim, receiver_occ_xyz, output_dir)
-            if self.config.audio_materials_json and hasattr(audio_sensor, "setAudioMaterialsJSON"):
-                audio_sensor.setAudioMaterialsJSON(self.config.audio_materials_json)
+            if audio_materials_json and hasattr(audio_sensor, "setAudioMaterialsJSON"):
+                audio_sensor.setAudioMaterialsJSON(audio_materials_json)
             if hasattr(audio_sensor, "setAudioSourceTransform"):
                 audio_sensor.setAudioSourceTransform(occ_to_habitat(source_occ_xyz))
             elif hasattr(audio_sensor, "set_audio_source_transform"):
@@ -321,6 +335,9 @@ class SoundSpacesBackend:
             raise SoundSpacesUnavailableError("This habitat_sim build does not expose Simulator.")
         if not scene_mesh_path.exists():
             raise FileNotFoundError(scene_mesh_path)
+        audio_materials_json = self._audio_materials_json(output_dir)
+        if audio_materials_json and scene_mesh_path.suffix.lower() == ".obj":
+            scene_mesh_path = write_semantic_stage_for_obj(scene_mesh_path)
 
         sim_cfg = hs.SimulatorConfiguration()
         sim_cfg.scene_id = str(scene_mesh_path)
@@ -341,8 +358,8 @@ class SoundSpacesBackend:
                 self._set_camera_light(sim)
             self._set_agent_pose(sim, source_occ_xyz, receiver_occ_xyz, True)
             audio_sensor = self._add_audio_sensor(sim, receiver_occ_xyz, output_dir)
-            if self.config.audio_materials_json and hasattr(audio_sensor, "setAudioMaterialsJSON"):
-                audio_sensor.setAudioMaterialsJSON(self.config.audio_materials_json)
+            if audio_materials_json and hasattr(audio_sensor, "setAudioMaterialsJSON"):
+                audio_sensor.setAudioMaterialsJSON(audio_materials_json)
             if hasattr(audio_sensor, "setAudioSourceTransform"):
                 audio_sensor.setAudioSourceTransform(occ_to_habitat(source_occ_xyz))
             elif hasattr(audio_sensor, "set_audio_source_transform"):

@@ -29,7 +29,7 @@ from soundspaces_adapter.visualize_debug import plot_geometry_debug, plot_rir_de
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Verify joint audio-visual Habitat-Sim/SoundSpaces rendering.")
-    parser.add_argument("--output-dir", type=Path, default=Path("outputs/audio_visual_verification"))
+    parser.add_argument("--output-dir", type=Path, default=Path("generated_soundspaces_runs/audio_visual_verification"))
     parser.add_argument("--scene-index", type=int, default=3)
     parser.add_argument("--case", choices=["los", "nlos"], default="los")
     parser.add_argument("--seed", type=int, default=20260416)
@@ -178,8 +178,8 @@ def main() -> int:
         visual_height=args.height,
         visual_pitch_deg=args.visual_pitch,
         visual_yaw_offset_deg=args.visual_yaw_offset,
-        enable_materials=False,
-        audio_materials_json=None,
+        enable_materials=True,
+        audio_materials_json=str(material_db_path),
     )
     cfg.save_json(report_dir / "soundspaces_av_config.json")
     try:
@@ -246,9 +246,8 @@ def main() -> int:
                 "to Habitat RGB/depth sensors. Vertex positions and metric geometry are unchanged."
             ),
             "semantic_material_note": (
-                "The RLR material database is written for inspection, but it is not connected by default. "
-                "Generated programmatic OBJ scenes need a semantic mesh/semantic scene descriptor before "
-                "explicit material coefficients can be enabled safely."
+                "The official RLR material database is connected by default. Programmatic OBJ scenes are "
+                "wrapped with a generated semantic stage so SoundSpaces can load material labels."
             ),
             "observations": sorted(observations.keys()),
             "rir_shape": list(rir.shape),

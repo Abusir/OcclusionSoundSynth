@@ -22,7 +22,7 @@ class SoundSpacesConfig:
     indirect: bool = True
     diffraction: bool = True
     transmission: bool = True
-    enable_materials: bool = False
+    enable_materials: bool = True
     audio_materials_json: str | None = None
     frequency_bands: int = 4
     global_volume: float = 1.0
@@ -35,7 +35,7 @@ class SoundSpacesConfig:
     source_ray_depth: int = 10
     max_diffraction_order: int = 10
     thread_count: int = 1
-    output_directory: str = "outputs"
+    output_directory: str = "generated_soundspaces_runs"
     write_ir_to_file: bool = False
     dump_wave_files: bool = False
     align_output_onset: bool = True

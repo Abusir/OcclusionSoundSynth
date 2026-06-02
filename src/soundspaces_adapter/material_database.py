@@ -44,6 +44,16 @@ DEFAULT_MEDIUM_SPEED = 1483.9610595703125
 
 
 MATERIAL_SPECS: dict[str, dict[str, object]] = {
+    "default": {
+        "name": "Default",
+        "labels": ["default"],
+        "description": "RLR/SoundSpaces default material.",
+        "source_material": "Default",
+        "source": "facebookresearch/rlr-audio-propagation mp3d_material_config.json",
+        "absorption": [0.10, 0.10, 0.10, 0.10, 0.10, 0.10],
+        "scattering": [0.50, 0.50, 0.50, 0.50, 0.50, 0.50],
+        "transmission": [0.00, 0.00, 0.00, 0.00, 0.00, 0.00],
+    },
     "indoor_floor_hard": {
         "name": "Indoor Floor - Wood On Concrete",
         "labels": ["indoor_floor_hard", "floor"],

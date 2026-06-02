@@ -51,9 +51,9 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--mono-from-foa-w", action="store_true", default=True)
     parser.add_argument("--compute-metrics", action="store_true")
     parser.add_argument(
-        "--enable-materials",
+        "--disable-materials",
         action="store_true",
-        help="Enable SoundSpaces material database loading. Requires a semantic mesh/descriptor for generated OBJ scenes.",
+        help="Disable the default official RLR material database path.",
     )
     parser.add_argument("--seed", type=int, default=42)
     return parser.parse_args(argv)
@@ -245,8 +245,8 @@ def main(argv: list[str] | None = None) -> int:
         output_directory=str(out),
         channel_type="Ambisonics",
         channel_count=4,
-        enable_materials=args.enable_materials,
-        audio_materials_json=str(material_db_path) if args.enable_materials else None,
+        enable_materials=not args.disable_materials,
+        audio_materials_json=str(material_db_path) if not args.disable_materials else None,
         enable_rgb=False,
         enable_depth=False,
     )
