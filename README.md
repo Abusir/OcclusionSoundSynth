@@ -42,11 +42,9 @@ The fixed project-side mapping is documented in `material_assignment_table.md`. 
 
 The included figures are generated from the same procedural scene and placement code used by the SoundSpaces/Habitat-Sim runs. Blue marks the FOA receiver, red marks the source, and the line shows the direct acoustic path.
 
-| Baffle room | L-shaped corridor |
-| --- | --- |
-| <img src="docs/assets/scene_00_layout.png" alt="Baffle room layout" width="100%"> | <img src="docs/assets/scene_12_layout.png" alt="L-shaped corridor layout" width="100%"> |
-| Empty room | Obstacle forest |
-| <img src="docs/assets/scene_34_layout.png" alt="Empty room layout" width="100%"> | <img src="docs/assets/scene_55_layout.png" alt="Obstacle forest layout" width="100%"> |
+| Baffle room | L-shaped corridor | Empty room | Obstacle forest |
+| --- | --- | --- | --- |
+| <img src="docs/assets/scene_00_layout.png" alt="Baffle room layout" width="100%"> | <img src="docs/assets/scene_12_layout.png" alt="L-shaped corridor layout" width="100%"> | <img src="docs/assets/scene_34_layout.png" alt="Empty room layout" width="100%"> | <img src="docs/assets/scene_55_layout.png" alt="Obstacle forest layout" width="100%"> |
 
 ## Repository Layout
 
@@ -98,8 +96,6 @@ python scripts/generate_rirs.py --config configs/rir_generation.yaml --set num_r
 ```
 
 Audio manifests may be CSV/TSV/JSON. CSV rows should contain at least `path,label,audio_id`; relative audio paths are resolved against the manifest file.
-
-The bundled smoke-test audio files are selected from ESC-50 and are licensed under CC-BY-NC-3.0; see `examples/test_audio_bank/README.md` and `THIRD_PARTY_NOTICES.md` for attribution details.
 
 ## Direct Audio Synthesis
 
@@ -168,7 +164,7 @@ Open `http://127.0.0.1:8765/`. The viewer shows the 3D mesh, receiver, source, d
 
 ## License
 
-The project code is released under the repository license. The bundled ESC-50 example audio files are third-party assets under CC-BY-NC-3.0 and are not covered by the code license; see `THIRD_PARTY_NOTICES.md`.
+The project code is released under the repository license.
 
 ## Common Issues
 
