@@ -131,7 +131,7 @@ SCENE_MATERIAL_ASSIGNMENTS: dict[str, dict[str, str | None]] = {
     "baffle_room": {
         "floor": "indoor_floor_hard",
         "wall": "indoor_wall_reflective",
-        "ceiling": "indoor_ceiling_reflective",
+        "ceiling": "indoor_wall_reflective",
         "obstacle": "solid_occluder",
         "open_boundary": None,
         "open_ceiling": None,
@@ -139,7 +139,7 @@ SCENE_MATERIAL_ASSIGNMENTS: dict[str, dict[str, str | None]] = {
     "l_shape_corridor": {
         "floor": "indoor_floor_hard",
         "wall": "indoor_wall_reflective",
-        "ceiling": "indoor_ceiling_reflective",
+        "ceiling": "indoor_wall_reflective",
         "obstacle": None,
         "open_boundary": None,
         "open_ceiling": None,
@@ -147,7 +147,7 @@ SCENE_MATERIAL_ASSIGNMENTS: dict[str, dict[str, str | None]] = {
     "t_shape_corridor": {
         "floor": "indoor_floor_hard",
         "wall": "indoor_wall_reflective",
-        "ceiling": "indoor_ceiling_reflective",
+        "ceiling": "indoor_wall_reflective",
         "obstacle": None,
         "open_boundary": None,
         "open_ceiling": None,
@@ -155,7 +155,7 @@ SCENE_MATERIAL_ASSIGNMENTS: dict[str, dict[str, str | None]] = {
     "empty_room": {
         "floor": "indoor_floor_hard",
         "wall": "indoor_wall_reflective",
-        "ceiling": "indoor_ceiling_reflective",
+        "ceiling": "indoor_wall_reflective",
         "obstacle": None,
         "open_boundary": None,
         "open_ceiling": None,

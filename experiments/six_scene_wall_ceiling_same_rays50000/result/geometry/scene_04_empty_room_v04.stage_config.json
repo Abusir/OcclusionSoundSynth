@@ -1,0 +1,7 @@
+{
+  "render_asset": "scene_04_empty_room_v04.obj",
+  "collision_asset": "scene_04_empty_room_v04.obj",
+  "semantic_asset": "scene_04_empty_room_v04_semantic.ply",
+  "semantic_descriptor_filename": "scene_04_empty_room_v04.scn",
+  "has_semantic_textures": false
+}
