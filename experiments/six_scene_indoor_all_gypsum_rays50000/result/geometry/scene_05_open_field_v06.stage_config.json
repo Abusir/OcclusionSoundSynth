@@ -1,7 +1,0 @@
-{
-  "render_asset": "scene_05_open_field_v06.obj",
-  "collision_asset": "scene_05_open_field_v06.obj",
-  "semantic_asset": "scene_05_open_field_v06_semantic.ply",
-  "semantic_descriptor_filename": "scene_05_open_field_v06.scn",
-  "has_semantic_textures": false
-}

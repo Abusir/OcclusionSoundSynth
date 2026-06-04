@@ -1,7 +1,0 @@
-{
-  "render_asset": "scene_06_obstacle_forest_v01.obj",
-  "collision_asset": "scene_06_obstacle_forest_v01.obj",
-  "semantic_asset": "scene_06_obstacle_forest_v01_semantic.ply",
-  "semantic_descriptor_filename": "scene_06_obstacle_forest_v01.scn",
-  "has_semantic_textures": false
-}
