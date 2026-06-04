@@ -41,6 +41,9 @@ DAMPING_FREQUENCIES = [
 ]
 DEFAULT_MEDIUM_DENSITY = 998.6546630859375
 DEFAULT_MEDIUM_SPEED = 1483.9610595703125
+MATERIAL_DAMPING_SCALE = 1.0
+MATERIAL_MEDIUM_DENSITY = DEFAULT_MEDIUM_DENSITY
+MATERIAL_MEDIUM_SPEED = DEFAULT_MEDIUM_SPEED
 
 
 MATERIAL_SPECS: dict[str, dict[str, object]] = {
@@ -104,6 +107,20 @@ MATERIAL_SPECS: dict[str, dict[str, object]] = {
         "scattering": [0.10, 0.15, 0.20, 0.20, 0.25, 0.30],
         "transmission": [0.050, 0.040, 0.030, 0.020, 0.005, 0.002],
     },
+    "indoor_balanced_reflective": {
+        "name": "Indoor Balanced Reflective",
+        "labels": ["indoor_balanced_reflective"],
+        "description": (
+            "Synthetic middle-ground indoor material for OCC demo scenes. "
+            "It is less reflective than the SoundSpaces default-material path "
+            "but less absorptive than the measured semantic ceiling/floor mix."
+        ),
+        "source_material": "Synthetic balanced indoor surface",
+        "source": "OCC six-scene calibration experiment",
+        "absorption": [0.06, 0.06, 0.07, 0.08, 0.10, 0.12],
+        "scattering": [0.45, 0.45, 0.50, 0.50, 0.55, 0.55],
+        "transmission": [0.00, 0.00, 0.00, 0.00, 0.00, 0.00],
+    },
     "solid_occluder": {
         "name": "Solid Occluder - Thick Wood",
         "labels": ["solid_occluder", "obstacle"],
@@ -131,7 +148,7 @@ SCENE_MATERIAL_ASSIGNMENTS: dict[str, dict[str, str | None]] = {
     "baffle_room": {
         "floor": "indoor_floor_hard",
         "wall": "indoor_wall_reflective",
-        "ceiling": "indoor_wall_reflective",
+        "ceiling": "indoor_ceiling_reflective",
         "obstacle": "solid_occluder",
         "open_boundary": None,
         "open_ceiling": None,
@@ -139,7 +156,7 @@ SCENE_MATERIAL_ASSIGNMENTS: dict[str, dict[str, str | None]] = {
     "l_shape_corridor": {
         "floor": "indoor_floor_hard",
         "wall": "indoor_wall_reflective",
-        "ceiling": "indoor_wall_reflective",
+        "ceiling": "indoor_ceiling_reflective",
         "obstacle": None,
         "open_boundary": None,
         "open_ceiling": None,
@@ -147,7 +164,7 @@ SCENE_MATERIAL_ASSIGNMENTS: dict[str, dict[str, str | None]] = {
     "t_shape_corridor": {
         "floor": "indoor_floor_hard",
         "wall": "indoor_wall_reflective",
-        "ceiling": "indoor_wall_reflective",
+        "ceiling": "indoor_ceiling_reflective",
         "obstacle": None,
         "open_boundary": None,
         "open_ceiling": None,
@@ -155,7 +172,7 @@ SCENE_MATERIAL_ASSIGNMENTS: dict[str, dict[str, str | None]] = {
     "empty_room": {
         "floor": "indoor_floor_hard",
         "wall": "indoor_wall_reflective",
-        "ceiling": "indoor_wall_reflective",
+        "ceiling": "indoor_ceiling_reflective",
         "obstacle": None,
         "open_boundary": None,
         "open_ceiling": None,
@@ -192,8 +209,27 @@ def _damping_curve() -> list[float]:
     out: list[float] = []
     base = 1.1595274e-10
     for idx, freq in enumerate(DAMPING_FREQUENCIES):
-        out.extend([freq, base * (1.54**idx)])
+        out.extend([freq, MATERIAL_DAMPING_SCALE * base * (1.54**idx)])
     return out
+
+
+def set_material_damping_scale(scale: float) -> None:
+    if scale < 0.0:
+        raise ValueError("material damping scale must be non-negative")
+    global MATERIAL_DAMPING_SCALE
+    MATERIAL_DAMPING_SCALE = float(scale)
+
+
+def set_material_medium(density: float | None = None, speed: float | None = None) -> None:
+    global MATERIAL_MEDIUM_DENSITY, MATERIAL_MEDIUM_SPEED
+    if density is not None:
+        if density <= 0.0:
+            raise ValueError("material medium density must be positive")
+        MATERIAL_MEDIUM_DENSITY = float(density)
+    if speed is not None:
+        if speed <= 0.0:
+            raise ValueError("material medium speed must be positive")
+        MATERIAL_MEDIUM_SPEED = float(speed)
 
 
 def _material(
@@ -210,8 +246,8 @@ def _material(
         "scattering": _curve(scattering),
         "transmission": _curve(transmission),
         "damping": _damping_curve(),
-        "density": DEFAULT_MEDIUM_DENSITY,
-        "speed": DEFAULT_MEDIUM_SPEED,
+        "density": MATERIAL_MEDIUM_DENSITY,
+        "speed": MATERIAL_MEDIUM_SPEED,
     }
 
 

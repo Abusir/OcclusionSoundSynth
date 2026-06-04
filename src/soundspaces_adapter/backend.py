@@ -277,8 +277,11 @@ class SoundSpacesBackend:
         if not scene_mesh_path.exists():
             raise FileNotFoundError(scene_mesh_path)
         audio_materials_json = self._audio_materials_json(output_dir)
-        if audio_materials_json and scene_mesh_path.suffix.lower() == ".obj":
-            scene_mesh_path = write_semantic_stage_for_obj(scene_mesh_path)
+        if audio_materials_json and self.config.semantic_material_stage and scene_mesh_path.suffix.lower() == ".obj":
+            scene_mesh_path = write_semantic_stage_for_obj(
+                scene_mesh_path,
+                semantic_asset_kind=self.config.semantic_asset_kind,
+            )
 
         sim_cfg = hs.SimulatorConfiguration()
         sim_cfg.scene_id = str(scene_mesh_path)
@@ -336,8 +339,11 @@ class SoundSpacesBackend:
         if not scene_mesh_path.exists():
             raise FileNotFoundError(scene_mesh_path)
         audio_materials_json = self._audio_materials_json(output_dir)
-        if audio_materials_json and scene_mesh_path.suffix.lower() == ".obj":
-            scene_mesh_path = write_semantic_stage_for_obj(scene_mesh_path)
+        if audio_materials_json and self.config.semantic_material_stage and scene_mesh_path.suffix.lower() == ".obj":
+            scene_mesh_path = write_semantic_stage_for_obj(
+                scene_mesh_path,
+                semantic_asset_kind=self.config.semantic_asset_kind,
+            )
 
         sim_cfg = hs.SimulatorConfiguration()
         sim_cfg.scene_id = str(scene_mesh_path)

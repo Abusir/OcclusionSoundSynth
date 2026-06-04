@@ -1,0 +1,70 @@
+mtllib scene_02_l_shape_corridor_v06.mtl
+o occ_synth_scene
+v 0.000000 0.000000 8.356796
+v 2.983353 0.000000 8.356796
+v 2.983353 0.000000 2.876651
+v 9.127030 0.000000 2.876651
+v 9.127030 0.000000 0.000000
+v 2.983353 0.000000 0.000000
+v 0.000000 0.000000 0.000000
+v 0.000000 0.000000 2.876651
+v 0.000000 2.606289 8.356796
+v 2.983353 2.606289 8.356796
+v 2.983353 2.606289 2.876651
+v 9.127030 2.606289 2.876651
+v 9.127030 2.606289 0.000000
+v 2.983353 2.606289 0.000000
+v 0.000000 2.606289 0.000000
+v 0.000000 2.606289 2.876651
+g boundary_floor
+usemtl indoor_wall_reflective
+f 3 8 1
+f 2 3 1
+f 5 3 4
+f 6 3 5
+f 8 3 6
+f 7 8 6
+g boundary_ceiling
+usemtl indoor_wall_reflective
+f 9 16 11
+f 9 11 10
+f 12 11 13
+f 13 11 14
+f 14 11 16
+f 14 16 15
+g boundary_side
+usemtl indoor_wall_reflective
+f 1 2 10
+f 1 10 9
+g boundary_side
+usemtl indoor_wall_reflective
+f 2 3 11
+f 2 11 10
+g boundary_side
+usemtl indoor_wall_reflective
+f 3 4 12
+f 3 12 11
+g boundary_side
+usemtl indoor_wall_reflective
+f 4 5 13
+f 4 13 12
+g boundary_side
+usemtl indoor_wall_reflective
+f 5 6 14
+f 5 14 13
+g boundary_side
+usemtl indoor_wall_reflective
+f 6 7 15
+f 6 15 14
+g boundary_side
+usemtl indoor_wall_reflective
+f 7 8 16
+f 7 16 15
+g boundary_side
+usemtl indoor_wall_reflective
+f 8 1 9
+f 8 9 16
+# semantic_floor_material indoor_wall_reflective
+# semantic_boundary_material indoor_wall_reflective
+# semantic_ceiling_material indoor_wall_reflective
+# semantic_obstacle_material none

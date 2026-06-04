@@ -24,6 +24,8 @@ class SoundSpacesConfig:
     transmission: bool = True
     enable_materials: bool = True
     audio_materials_json: str | None = None
+    semantic_material_stage: bool = True
+    semantic_asset_kind: str = "obj_colored"
     frequency_bands: int = 4
     global_volume: float = 1.0
     direct_sh_order: int = 3

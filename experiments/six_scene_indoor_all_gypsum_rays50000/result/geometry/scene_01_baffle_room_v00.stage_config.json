@@ -1,0 +1,7 @@
+{
+  "render_asset": "scene_01_baffle_room_v00.obj",
+  "collision_asset": "scene_01_baffle_room_v00.obj",
+  "semantic_asset": "scene_01_baffle_room_v00_semantic.ply",
+  "semantic_descriptor_filename": "scene_01_baffle_room_v00.scn",
+  "has_semantic_textures": false
+}

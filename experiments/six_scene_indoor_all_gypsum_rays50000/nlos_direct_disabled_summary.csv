@@ -1,0 +1,7 @@
+scene_type,actual,rir_direct_enabled,rir_transmission_enabled,expected_euclidean_ms,observed_first_arrival_ms,first_minus_euclidean_ms,fire_receiver_to_source_rms_db
+baffle_room,NLOS,False,True,11.750,24.000,12.250,-21.772
+l_shape_corridor,NLOS,False,True,24.000,29.375,5.375,-24.090
+t_shape_corridor,NLOS,False,True,22.062,28.812,6.750,-25.535
+empty_room,LOS,True,True,18.250,17.938,-0.312,-21.202
+open_field,LOS,True,True,16.750,16.375,-0.375,-21.601
+obstacle_forest,NLOS,False,True,16.938,22.062,5.125,-22.018

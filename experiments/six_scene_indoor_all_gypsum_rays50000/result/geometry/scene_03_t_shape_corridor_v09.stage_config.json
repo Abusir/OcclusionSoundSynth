@@ -1,0 +1,7 @@
+{
+  "render_asset": "scene_03_t_shape_corridor_v09.obj",
+  "collision_asset": "scene_03_t_shape_corridor_v09.obj",
+  "semantic_asset": "scene_03_t_shape_corridor_v09_semantic.ply",
+  "semantic_descriptor_filename": "scene_03_t_shape_corridor_v09.scn",
+  "has_semantic_textures": false
+}

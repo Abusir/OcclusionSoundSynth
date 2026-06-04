@@ -1,0 +1,328 @@
+{
+  "material_specs": {
+    "default": {
+      "name": "Default",
+      "labels": [
+        "default"
+      ],
+      "description": "RLR/SoundSpaces default material.",
+      "source_material": "Default",
+      "source": "facebookresearch/rlr-audio-propagation mp3d_material_config.json",
+      "absorption": [
+        0.1,
+        0.1,
+        0.1,
+        0.1,
+        0.1,
+        0.1
+      ],
+      "scattering": [
+        0.5,
+        0.5,
+        0.5,
+        0.5,
+        0.5,
+        0.5
+      ],
+      "transmission": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "indoor_floor_hard": {
+      "name": "Indoor Floor - Wood On Concrete",
+      "labels": [
+        "indoor_floor_hard",
+        "floor"
+      ],
+      "description": "RLR/SoundSpaces material: Wood On Concrete.",
+      "source_material": "Wood On Concrete",
+      "source": "facebookresearch/rlr-audio-propagation mp3d_material_config.json",
+      "absorption": [
+        0.04,
+        0.04,
+        0.07,
+        0.06,
+        0.06,
+        0.07
+      ],
+      "scattering": [
+        0.1,
+        0.1,
+        0.1,
+        0.1,
+        0.1,
+        0.15
+      ],
+      "transmission": [
+        0.004,
+        0.0079,
+        0.0056,
+        0.0016,
+        0.0014,
+        0.0005
+      ]
+    },
+    "outdoor_ground_grass": {
+      "name": "Outdoor Ground - Grass",
+      "labels": [
+        "outdoor_ground_grass",
+        "grass",
+        "ground"
+      ],
+      "description": "RLR/SoundSpaces material: Grass.",
+      "source_material": "Grass",
+      "source": "facebookresearch/rlr-audio-propagation mp3d_material_config.json",
+      "absorption": [
+        0.11,
+        0.26,
+        0.6,
+        0.69,
+        0.92,
+        0.99
+      ],
+      "scattering": [
+        0.3,
+        0.3,
+        0.4,
+        0.5,
+        0.6,
+        0.7
+      ],
+      "transmission": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "outdoor_ground_soil": {
+      "name": "Outdoor Ground - Soil",
+      "labels": [
+        "outdoor_ground_soil",
+        "soil"
+      ],
+      "description": "RLR/SoundSpaces material: Soil.",
+      "source_material": "Soil",
+      "source": "facebookresearch/rlr-audio-propagation mp3d_material_config.json",
+      "absorption": [
+        0.15,
+        0.25,
+        0.4,
+        0.55,
+        0.6,
+        0.6
+      ],
+      "scattering": [
+        0.1,
+        0.2,
+        0.25,
+        0.4,
+        0.55,
+        0.7
+      ],
+      "transmission": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "indoor_wall_reflective": {
+      "name": "Indoor Wall - Gypsum Board",
+      "labels": [
+        "indoor_wall_reflective",
+        "wall"
+      ],
+      "description": "RLR/SoundSpaces material: Gypsum Board.",
+      "source_material": "Gypsum Board",
+      "source": "facebookresearch/rlr-audio-propagation mp3d_material_config.json",
+      "absorption": [
+        0.29,
+        0.1,
+        0.05,
+        0.04,
+        0.07,
+        0.09
+      ],
+      "scattering": [
+        0.1,
+        0.11,
+        0.12,
+        0.13,
+        0.14,
+        0.15
+      ],
+      "transmission": [
+        0.035,
+        0.0125,
+        0.0056,
+        0.0025,
+        0.0013,
+        0.0032
+      ]
+    },
+    "indoor_ceiling_reflective": {
+      "name": "Indoor Ceiling - Acoustic Tile",
+      "labels": [
+        "indoor_ceiling_reflective",
+        "ceiling"
+      ],
+      "description": "RLR/SoundSpaces material: Acoustic Tile.",
+      "source_material": "Acoustic Tile",
+      "source": "facebookresearch/rlr-audio-propagation mp3d_material_config.json",
+      "absorption": [
+        0.5,
+        0.7,
+        0.6,
+        0.7,
+        0.7,
+        0.5
+      ],
+      "scattering": [
+        0.1,
+        0.15,
+        0.2,
+        0.2,
+        0.25,
+        0.3
+      ],
+      "transmission": [
+        0.05,
+        0.04,
+        0.03,
+        0.02,
+        0.005,
+        0.002
+      ]
+    },
+    "solid_occluder": {
+      "name": "Solid Occluder - Thick Wood",
+      "labels": [
+        "solid_occluder",
+        "obstacle"
+      ],
+      "description": "RLR/SoundSpaces material: wood, Thick.",
+      "source_material": "wood, Thick",
+      "source": "facebookresearch/rlr-audio-propagation mp3d_material_config.json",
+      "absorption": [
+        0.19,
+        0.14,
+        0.09,
+        0.06,
+        0.06,
+        0.05
+      ],
+      "scattering": [
+        0.1,
+        0.1,
+        0.1,
+        0.1,
+        0.1,
+        0.15
+      ],
+      "transmission": [
+        0.035,
+        0.028,
+        0.028,
+        0.028,
+        0.0011,
+        0.0071
+      ]
+    },
+    "sky_absorber": {
+      "name": "Open Boundary - Sound Proof",
+      "labels": [
+        "sky_absorber",
+        "outdoor_ceiling",
+        "open_boundary",
+        "open_ceiling"
+      ],
+      "description": "RLR/SoundSpaces material: Sound Proof, used as semantic absorber for open boundaries.",
+      "source_material": "Sound Proof",
+      "source": "facebookresearch/rlr-audio-propagation mp3d_material_config.json",
+      "absorption": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "scattering": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "transmission": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    }
+  },
+  "scene_material_assignments": {
+    "baffle_room": {
+      "floor": "indoor_wall_reflective",
+      "wall": "indoor_wall_reflective",
+      "ceiling": "indoor_wall_reflective",
+      "obstacle": "solid_occluder",
+      "open_boundary": null,
+      "open_ceiling": null
+    },
+    "l_shape_corridor": {
+      "floor": "indoor_wall_reflective",
+      "wall": "indoor_wall_reflective",
+      "ceiling": "indoor_wall_reflective",
+      "obstacle": null,
+      "open_boundary": null,
+      "open_ceiling": null
+    },
+    "t_shape_corridor": {
+      "floor": "indoor_wall_reflective",
+      "wall": "indoor_wall_reflective",
+      "ceiling": "indoor_wall_reflective",
+      "obstacle": null,
+      "open_boundary": null,
+      "open_ceiling": null
+    },
+    "empty_room": {
+      "floor": "indoor_wall_reflective",
+      "wall": "indoor_wall_reflective",
+      "ceiling": "indoor_wall_reflective",
+      "obstacle": null,
+      "open_boundary": null,
+      "open_ceiling": null
+    },
+    "open_field": {
+      "floor": "outdoor_ground_grass",
+      "wall": null,
+      "ceiling": null,
+      "obstacle": null,
+      "open_boundary": "sky_absorber",
+      "open_ceiling": "sky_absorber"
+    },
+    "obstacle_forest": {
+      "floor": "outdoor_ground_soil",
+      "wall": null,
+      "ceiling": null,
+      "obstacle": "solid_occluder",
+      "open_boundary": "sky_absorber",
+      "open_ceiling": "sky_absorber"
+    }
+  }
+}

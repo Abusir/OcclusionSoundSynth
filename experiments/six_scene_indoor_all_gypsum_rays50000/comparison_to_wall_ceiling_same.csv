@@ -1,0 +1,7 @@
+scene_type,floor_base,floor_gypsum,rir_energy_delta_db,probe_mono_rms_delta_db,late20_ratio_base,late20_ratio_gypsum,late20_direct_db_base,late20_direct_db_gypsum,fire_receiver_db_base,fire_receiver_db_gypsum,fire_delta_db
+baffle_room,indoor_floor_hard,indoor_wall_reflective,-0.027,-0.024,0.392107,0.388294,-1.904,-1.974,-17.060,-17.213,-0.153
+l_shape_corridor,indoor_floor_hard,indoor_wall_reflective,-0.115,-0.114,1,1,4.378,4.263,-21.666,-22.218,-0.552
+t_shape_corridor,indoor_floor_hard,indoor_wall_reflective,0.006,0.009,1,1,2.957,2.963,-22.201,-22.274,-0.072
+empty_room,indoor_floor_hard,indoor_wall_reflective,0.015,0.017,0.469715,0.471534,-0.527,-0.495,-21.140,-21.202,-0.062
+open_field,outdoor_ground_grass,outdoor_ground_grass,0.000,0.000,0.0852943,0.0852943,-10.304,-10.304,-21.601,-21.601,0.000
+obstacle_forest,outdoor_ground_soil,outdoor_ground_soil,0.000,0.000,0.4637,0.4637,-0.632,-0.632,-19.637,-19.637,0.000
