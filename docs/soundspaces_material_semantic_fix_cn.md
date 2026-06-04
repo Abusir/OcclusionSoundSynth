@@ -40,7 +40,7 @@
 
 注意：室内天花板使用 `Gypsum Board` 是按实验需求手动指定为“与墙面一致”。这仍使用官方材料库中的 `Gypsum Board` 系数，但不是把天花板映射到官方库里的 `Acoustic Tile`。
 
-六场景示例默认关闭 transmission，使遮挡场景保持几何遮挡效果；材料 JSON 中仍保留官方 transmission 曲线，后续可用 `--allow-transmission` 打开传播侧透射。
+六场景示例和大规模数据生成现在默认开启 direct component 与 material transmission，使结果更接近真实材料传播；只有做遮挡消融或示意图时，才显式使用 `--disable-direct-for-nlos` 或 `--disable-transmission` 关闭对应机制。
 
 ## 重新运行命令
 

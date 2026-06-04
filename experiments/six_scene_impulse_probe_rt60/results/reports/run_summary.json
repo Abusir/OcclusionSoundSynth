@@ -1,5 +1,5 @@
 {
-  "output_dir": "/home/digao/code/occ_data_synth/generated_soundspaces_runs/six_scene_impulse_probe_material_path_fixed_ceiling_acoustic_tile_rays50000_500ms_edc_split_rir_rt60",
+  "output_dir": "/home/digao/code/occ_data_synth/generated_soundspaces_runs/six_scene_impulse_probe_material_path_fixed_ceiling_acoustic_tile_rays50000_500ms_edc_split_rir_rt60_direct_transmission_on",
   "scene_count": 6,
   "scene_order": [
     "baffle_room",
@@ -15,8 +15,8 @@
   "impulse_duration": 0.0,
   "los_control_distance": 6.0,
   "distance_tolerance": 0.35,
-  "dry_wav": "/home/digao/code/occ_data_synth/generated_soundspaces_runs/six_scene_impulse_probe_material_path_fixed_ceiling_acoustic_tile_rays50000_500ms_edc_split_rir_rt60/dry/short_impulse_probe.wav",
-  "material_database": "/home/digao/code/occ_data_synth/generated_soundspaces_runs/six_scene_impulse_probe_material_path_fixed_ceiling_acoustic_tile_rays50000_500ms_edc_split_rir_rt60/reports/occ_rlr_materials.json",
+  "dry_wav": "/home/digao/code/occ_data_synth/generated_soundspaces_runs/six_scene_impulse_probe_material_path_fixed_ceiling_acoustic_tile_rays50000_500ms_edc_split_rir_rt60_direct_transmission_on/dry/short_impulse_probe.wav",
+  "material_database": "/home/digao/code/occ_data_synth/generated_soundspaces_runs/six_scene_impulse_probe_material_path_fixed_ceiling_acoustic_tile_rays50000_500ms_edc_split_rir_rt60_direct_transmission_on/reports/occ_rlr_materials.json",
   "material_database_payload": {
     "materials": [
       {
@@ -1125,7 +1125,7 @@
       }
     }
   },
-  "material_assignments": "/home/digao/code/occ_data_synth/generated_soundspaces_runs/six_scene_impulse_probe_material_path_fixed_ceiling_acoustic_tile_rays50000_500ms_edc_split_rir_rt60/reports/occ_scene_material_assignments.json",
+  "material_assignments": "/home/digao/code/occ_data_synth/generated_soundspaces_runs/six_scene_impulse_probe_material_path_fixed_ceiling_acoustic_tile_rays50000_500ms_edc_split_rir_rt60_direct_transmission_on/reports/occ_scene_material_assignments.json",
   "material_assignments_payload": {
     "material_specs": {
       "default": {
@@ -1487,14 +1487,14 @@
       }
     }
   },
-  "allow_transmission": false,
+  "allow_transmission": true,
   "disable_materials": false,
   "indoor_surfaces_gypsum": false,
   "indoor_balanced_reflective": false,
   "material_damping_scale": 1.0,
   "material_medium_density": null,
   "material_medium_speed": null,
-  "keep_direct_for_nlos": false,
+  "keep_direct_for_nlos": true,
   "align_output_onset": false,
   "rir_plot_window_ms": 500.0,
   "outdoor_boundary_mode": "absorbing_shell",
@@ -1507,9 +1507,9 @@
     "direct": true,
     "indirect": true,
     "diffraction": true,
-    "transmission": false,
+    "transmission": true,
     "enable_materials": true,
-    "audio_materials_json": "/home/digao/code/occ_data_synth/generated_soundspaces_runs/six_scene_impulse_probe_material_path_fixed_ceiling_acoustic_tile_rays50000_500ms_edc_split_rir_rt60/reports/occ_rlr_materials.json",
+    "audio_materials_json": "/home/digao/code/occ_data_synth/generated_soundspaces_runs/six_scene_impulse_probe_material_path_fixed_ceiling_acoustic_tile_rays50000_500ms_edc_split_rir_rt60_direct_transmission_on/reports/occ_rlr_materials.json",
     "semantic_material_stage": true,
     "semantic_asset_kind": "obj_colored",
     "frequency_bands": 4,
@@ -1523,7 +1523,7 @@
     "source_ray_depth": 10,
     "max_diffraction_order": 10,
     "thread_count": 1,
-    "output_directory": "/home/digao/code/occ_data_synth/generated_soundspaces_runs/six_scene_impulse_probe_material_path_fixed_ceiling_acoustic_tile_rays50000_500ms_edc_split_rir_rt60",
+    "output_directory": "/home/digao/code/occ_data_synth/generated_soundspaces_runs/six_scene_impulse_probe_material_path_fixed_ceiling_acoustic_tile_rays50000_500ms_edc_split_rir_rt60_direct_transmission_on",
     "write_ir_to_file": false,
     "dump_wave_files": false,
     "align_output_onset": false,
@@ -1549,7 +1549,7 @@
     "has_audio_sensor_spec": true,
     "has_audio_config": true
   },
-  "manifest_csv": "/home/digao/code/occ_data_synth/generated_soundspaces_runs/six_scene_impulse_probe_material_path_fixed_ceiling_acoustic_tile_rays50000_500ms_edc_split_rir_rt60/probe_manifest.csv",
+  "manifest_csv": "/home/digao/code/occ_data_synth/generated_soundspaces_runs/six_scene_impulse_probe_material_path_fixed_ceiling_acoustic_tile_rays50000_500ms_edc_split_rir_rt60_direct_transmission_on/probe_manifest.csv",
   "notes": [
     "One random scene is selected from each of the six OCC structure types.",
     "Baffle room, L-shaped corridor, T-shaped corridor, and obstacle forest are forced to NLOS placements.",

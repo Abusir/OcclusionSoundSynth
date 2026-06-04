@@ -159,11 +159,16 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument(
         "--allow-transmission",
         action="store_true",
+        default=True,
         help=(
-            "Allow acoustic transmission through materials. By default this "
-            "six-scene occlusion example disables transmission so NLOS layouts "
-            "behave as visibly occluded examples."
+            "Allow acoustic transmission through materials. This is enabled by default; "
+            "the flag is kept for compatibility with older run scripts."
         ),
+    )
+    parser.add_argument(
+        "--disable-transmission",
+        action="store_true",
+        help="Disable acoustic transmission for ablation or schematic occlusion-only examples.",
     )
     parser.add_argument(
         "--disable-materials",
@@ -183,7 +188,16 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument(
         "--keep-direct-for-nlos",
         action="store_true",
-        help="Keep the direct component enabled for NLOS cases, matching the legacy flat-spectrum run.",
+        default=True,
+        help=(
+            "Keep the direct acoustic component enabled for NLOS cases. This is enabled "
+            "by default for physically realistic material simulations."
+        ),
+    )
+    parser.add_argument(
+        "--disable-direct-for-nlos",
+        action="store_true",
+        help="Disable the direct component for NLOS cases for schematic occlusion-only examples.",
     )
     parser.add_argument(
         "--align-output-onset",
@@ -933,7 +947,7 @@ def main(argv: list[str] | None = None) -> int:
         onset_threshold_db=args.onset_threshold_db,
         enable_materials=not args.disable_materials,
         audio_materials_json=str(material_db_path) if not args.disable_materials else None,
-        transmission=bool(args.allow_transmission),
+        transmission=not bool(args.disable_transmission),
         enable_rgb=False,
         enable_depth=False,
     )
@@ -982,7 +996,7 @@ def main(argv: list[str] | None = None) -> int:
         case_id = f"probe_{scene_index:03d}_{scene.scene_id}"
         case_dir = cases_dir / case_id
         case_dir.mkdir(parents=True, exist_ok=True)
-        case_config = replace(config, direct=True if args.keep_direct_for_nlos else bool(placement.is_los))
+        case_config = replace(config, direct=bool(placement.is_los) or not bool(args.disable_direct_for_nlos))
         case_config.save_json(case_dir / "soundspaces_case_config.json")
         backend = SoundSpacesBackend(case_config)
         rir = backend.render_rir(
@@ -1155,14 +1169,16 @@ def main(argv: list[str] | None = None) -> int:
             "material_database_payload": material_db,
             "material_assignments": str(material_assignment_path),
             "material_assignments_payload": material_assignments,
-            "allow_transmission": bool(args.allow_transmission),
+            "allow_transmission": not bool(args.disable_transmission),
+            "disable_transmission": bool(args.disable_transmission),
             "disable_materials": bool(args.disable_materials),
             "indoor_surfaces_gypsum": bool(args.indoor_surfaces_gypsum),
             "indoor_balanced_reflective": bool(args.indoor_balanced_reflective),
             "material_damping_scale": float(args.material_damping_scale),
             "material_medium_density": args.material_medium_density,
             "material_medium_speed": args.material_medium_speed,
-            "keep_direct_for_nlos": bool(args.keep_direct_for_nlos),
+            "keep_direct_for_nlos": not bool(args.disable_direct_for_nlos),
+            "disable_direct_for_nlos": bool(args.disable_direct_for_nlos),
             "align_output_onset": bool(args.align_output_onset),
             "rir_plot_window_ms": args.rir_plot_window_ms,
             "outdoor_boundary_mode": outdoor_boundary_mode,
@@ -1176,8 +1192,8 @@ def main(argv: list[str] | None = None) -> int:
                 "Empty room and open field are LOS controls because they cannot construct geometric occlusion.",
                 "Materials are enabled by default and use reports/occ_rlr_materials.json; pass --disable-materials for the legacy default-material path.",
                 "Outdoor boundary mode is auto-selected so material-disabled legacy runs use true geometric open boundaries.",
-                "Acoustic transmission is disabled by default; pass --allow-transmission to restore transmission paths.",
-                "The direct acoustic component is disabled for NLOS cases by default; pass --keep-direct-for-nlos to match legacy behavior.",
+                "Acoustic transmission is enabled by default; pass --disable-transmission only for ablation examples.",
+                "The direct acoustic component is enabled by default for all cases; pass --disable-direct-for-nlos only for schematic occlusion-only examples.",
                 "The dry probe is ten seconds long and contains one single-sample delta impulse by default.",
                 "RIR summary figures plot the single-channel RIR used for analysis/convolution and mark geometric/observed delays.",
                 "RIR summary figures include Schroeder energy decay and RT20/RT30/RT60 estimates when enough decay range is available.",

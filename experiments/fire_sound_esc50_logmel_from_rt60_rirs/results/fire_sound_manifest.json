@@ -17,11 +17,11 @@
     "source_peak": 0.949999988079071,
     "source_spectral_centroid_hz": 2230.057525886913,
     "source_hf_ratio_2k_nyquist": 0.45668955674369877,
-    "receiver_rms": 0.005563597635130746,
-    "receiver_peak": 0.08577078580856323,
-    "receiver_spectral_centroid_hz": 2860.4937065790677,
-    "receiver_hf_ratio_2k_nyquist": 0.5991517573224314,
-    "receiver_to_source_rms_db": -12.790106591736162
+    "receiver_rms": 0.005538568263822279,
+    "receiver_peak": 0.07586724311113358,
+    "receiver_spectral_centroid_hz": 2644.2183155052276,
+    "receiver_hf_ratio_2k_nyquist": 0.5372521919884821,
+    "receiver_to_source_rms_db": -12.829270612017815
   },
   {
     "case_id": "probe_001_scene_02_l_shape_corridor_v06",
@@ -41,11 +41,11 @@
     "source_peak": 0.949999988079071,
     "source_spectral_centroid_hz": 2230.057525886913,
     "source_hf_ratio_2k_nyquist": 0.45668955674369877,
-    "receiver_rms": 0.0047094907218177854,
-    "receiver_peak": 0.07615867257118225,
-    "receiver_spectral_centroid_hz": 2560.681102139984,
-    "receiver_hf_ratio_2k_nyquist": 0.5291111696157438,
-    "receiver_to_source_rms_db": -14.237741956155801
+    "receiver_rms": 0.005316836442463864,
+    "receiver_peak": 0.07505854964256287,
+    "receiver_spectral_centroid_hz": 2108.2335677618303,
+    "receiver_hf_ratio_2k_nyquist": 0.43018637886263206,
+    "receiver_to_source_rms_db": -13.184154855342802
   },
   {
     "case_id": "probe_002_scene_03_t_shape_corridor_v09",
@@ -65,11 +65,11 @@
     "source_peak": 0.949999988079071,
     "source_spectral_centroid_hz": 2230.057525886913,
     "source_hf_ratio_2k_nyquist": 0.45668955674369877,
-    "receiver_rms": 0.0037572882330212734,
-    "receiver_peak": 0.05316118896007538,
-    "receiver_spectral_centroid_hz": 3034.931215312931,
-    "receiver_hf_ratio_2k_nyquist": 0.6360285072904776,
-    "receiver_to_source_rms_db": -16.199730620873954
+    "receiver_rms": 0.004139646779823673,
+    "receiver_peak": 0.062037914991378784,
+    "receiver_spectral_centroid_hz": 2690.856116646259,
+    "receiver_hf_ratio_2k_nyquist": 0.5548393941456656,
+    "receiver_to_source_rms_db": -15.357955148344058
   },
   {
     "case_id": "probe_003_scene_04_empty_room_v04",
@@ -89,11 +89,11 @@
     "source_peak": 0.949999988079071,
     "source_spectral_centroid_hz": 2230.057525886913,
     "source_hf_ratio_2k_nyquist": 0.45668955674369877,
-    "receiver_rms": 0.012066546999898535,
-    "receiver_peak": 0.13989050686359406,
-    "receiver_spectral_centroid_hz": 1297.1472568763443,
-    "receiver_hf_ratio_2k_nyquist": 0.2680504560918528,
-    "receiver_to_source_rms_db": -6.065560692044699
+    "receiver_rms": 0.012118281787189756,
+    "receiver_peak": 0.16145610809326172,
+    "receiver_spectral_centroid_hz": 1257.5537348784715,
+    "receiver_hf_ratio_2k_nyquist": 0.2618665691911943,
+    "receiver_to_source_rms_db": -6.0283999296315836
   },
   {
     "case_id": "probe_004_scene_05_open_field_v06",
@@ -137,10 +137,10 @@
     "source_peak": 0.949999988079071,
     "source_spectral_centroid_hz": 2230.057525886913,
     "source_hf_ratio_2k_nyquist": 0.45668955674369877,
-    "receiver_rms": 0.0027067068113015304,
-    "receiver_peak": 0.04182902351021767,
-    "receiver_spectral_centroid_hz": 576.1745677050111,
-    "receiver_hf_ratio_2k_nyquist": 0.11254147855433358,
-    "receiver_to_source_rms_db": -19.0483965522236
+    "receiver_rms": 0.002532482695190684,
+    "receiver_peak": 0.03480542078614235,
+    "receiver_spectral_centroid_hz": 482.61118650404717,
+    "receiver_hf_ratio_2k_nyquist": 0.0996541725635105,
+    "receiver_to_source_rms_db": -19.626291139795864
   }
 ]

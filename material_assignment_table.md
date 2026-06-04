@@ -27,4 +27,4 @@ Frequency bands are 125, 250, 500, 1000, 2000, and 4000 Hz.
 | `open_field` | `outdoor_ground_grass` | none | none | none | `sky_absorber` | `sky_absorber` |
 | `obstacle_forest` | `outdoor_ground_soil` | none | none | `solid_occluder` | `sky_absorber` | `sky_absorber` |
 
-In the current non-semantic OBJ SoundSpaces path, outdoor open boundary and open ceiling are not exported as acoustic geometry. They are still recorded in the assignment table so that a future semantic scene descriptor can map these components directly to `sky_absorber`.
+Outdoor scenes are now exported as finite acoustic domains with `sky_absorber` side and top boundary faces. These boundary faces are real acoustic geometry in the exported OBJ, not only metadata in the material assignment table.
