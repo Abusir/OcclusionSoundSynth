@@ -1,0 +1,38 @@
+mtllib scene_04_empty_room_v04.mtl
+o occ_synth_scene
+v 6.541056 0.000000 0.000000
+v 0.000000 0.000000 0.000000
+v 0.000000 0.000000 10.518612
+v 6.541056 0.000000 10.518612
+v 6.541056 3.895323 0.000000
+v 0.000000 3.895323 0.000000
+v 0.000000 3.895323 10.518612
+v 6.541056 3.895323 10.518612
+g boundary_floor
+usemtl indoor_floor_hard
+f 1 2 3
+f 4 1 3
+g boundary_ceiling
+usemtl indoor_ceiling_reflective
+f 7 6 5
+f 7 5 8
+g boundary_side
+usemtl indoor_wall_reflective
+f 1 2 6
+f 1 6 5
+g boundary_side
+usemtl indoor_wall_reflective
+f 2 3 7
+f 2 7 6
+g boundary_side
+usemtl indoor_wall_reflective
+f 3 4 8
+f 3 8 7
+g boundary_side
+usemtl indoor_wall_reflective
+f 4 1 5
+f 4 5 8
+# semantic_floor_material indoor_floor_hard
+# semantic_boundary_material indoor_wall_reflective
+# semantic_ceiling_material indoor_ceiling_reflective
+# semantic_obstacle_material none
