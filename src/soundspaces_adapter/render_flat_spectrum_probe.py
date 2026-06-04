@@ -11,13 +11,18 @@ from typing import Any
 import numpy as np
 import soundfile as sf
 
+SPECTROGRAM_DB_VMIN = -120.0
+SPECTROGRAM_DB_VMAX = 20.0
+
 try:
     import matplotlib
 
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
+    from matplotlib.font_manager import FontProperties
 except Exception:  # pragma: no cover - optional plotting dependency
     plt = None
+    FontProperties = None
 
 ROOT = Path(__file__).resolve().parents[2]
 SRC = ROOT / "src"
@@ -38,6 +43,30 @@ from soundspaces_adapter.material_database import (
     write_scene_material_assignments,
 )
 from soundspaces_adapter.validation import validate_rir_physics
+
+
+FONT_CANDIDATES = [
+    Path("/usr/share/fonts/truetype/wqy/wqy-microhei.ttc"),
+    Path("/usr/share/fonts/truetype/droid/DroidSansFallbackFull.ttf"),
+    Path("/usr/share/fonts/truetype/arphic-gbsn00lp/gbsn00lp.ttf"),
+]
+FONT_PATH = next((path for path in FONT_CANDIDATES if path.exists()), None)
+FONT = FontProperties(fname=str(FONT_PATH)) if FontProperties is not None and FONT_PATH is not None else None
+
+if plt is not None and FONT is not None:
+    plt.rcParams.update(
+        {
+            "font.family": FONT.get_name(),
+            "axes.unicode_minus": False,
+            "pdf.fonttype": 42,
+            "ps.fonttype": 42,
+            "svg.fonttype": "none",
+        }
+    )
+
+
+def _font_kwargs() -> dict[str, Any]:
+    return {"fontproperties": FONT} if FONT is not None else {}
 
 
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
@@ -128,9 +157,9 @@ def save_spectrum_plot(audio: np.ndarray, sample_rate: int, path: Path, title: s
     fig, ax = plt.subplots(figsize=(8, 3.6), dpi=140)
     ax.plot(freqs, db, linewidth=0.8)
     ax.set_xlim(0, sample_rate / 2)
-    ax.set_xlabel("Frequency (Hz)")
-    ax.set_ylabel("Magnitude (dB)")
-    ax.set_title(title)
+    ax.set_xlabel("Frequency (Hz)", **_font_kwargs())
+    ax.set_ylabel("Magnitude (dB)", **_font_kwargs())
+    ax.set_title(title, **_font_kwargs())
     ax.grid(True, alpha=0.25)
     fig.tight_layout()
     fig.savefig(path)
@@ -211,10 +240,12 @@ def save_log_mel_plot(
         aspect="auto",
         extent=(0.0, duration_s, 0, n_mels),
         cmap="magma",
+        vmin=SPECTROGRAM_DB_VMIN,
+        vmax=SPECTROGRAM_DB_VMAX,
     )
-    ax.set_xlabel("Time (s)")
-    ax.set_ylabel("Mel bin")
-    ax.set_title(title)
+    ax.set_xlabel("Time (s)", **_font_kwargs())
+    ax.set_ylabel("Mel bin", **_font_kwargs())
+    ax.set_title(title, **_font_kwargs())
     fig.colorbar(image, ax=ax, label="Log mel power (dB)")
     fig.tight_layout()
     fig.savefig(path)
@@ -259,10 +290,12 @@ def save_stft_plot(
         aspect="auto",
         extent=(0.0, duration_s, 0.0, sample_rate / 2.0),
         cmap="magma",
+        vmin=SPECTROGRAM_DB_VMIN,
+        vmax=SPECTROGRAM_DB_VMAX,
     )
-    ax.set_xlabel("Time (s)")
-    ax.set_ylabel("Frequency (Hz)")
-    ax.set_title(title)
+    ax.set_xlabel("Time (s)", **_font_kwargs())
+    ax.set_ylabel("Frequency (Hz)", **_font_kwargs())
+    ax.set_title(title, **_font_kwargs())
     fig.colorbar(image, ax=ax, label="Log magnitude (dB)")
     fig.tight_layout()
     fig.savefig(path)
@@ -293,12 +326,12 @@ def save_delta_stft_plot(
         aspect="auto",
         extent=(0.0, duration_s, 0.0, sample_rate / 2.0),
         cmap="coolwarm",
-        vmin=-30.0,
-        vmax=30.0,
+        vmin=SPECTROGRAM_DB_VMIN,
+        vmax=SPECTROGRAM_DB_VMAX,
     )
-    ax.set_xlabel("Time (s)")
-    ax.set_ylabel("Frequency (Hz)")
-    ax.set_title(title)
+    ax.set_xlabel("Time (s)", **_font_kwargs())
+    ax.set_ylabel("Frequency (Hz)", **_font_kwargs())
+    ax.set_title(title, **_font_kwargs())
     fig.colorbar(image, ax=ax, label="Output - input STFT (dB)")
     fig.tight_layout()
     fig.savefig(path)
@@ -333,9 +366,9 @@ def save_transfer_plot(
     ax.axhline(0.0, color="black", linewidth=0.7, alpha=0.35)
     ax.set_xlim(0, sample_rate / 2)
     ax.set_ylim(-60, 20)
-    ax.set_xlabel("Frequency (Hz)")
-    ax.set_ylabel("Output / input magnitude (dB)")
-    ax.set_title(title)
+    ax.set_xlabel("Frequency (Hz)", **_font_kwargs())
+    ax.set_ylabel("Output / input magnitude (dB)", **_font_kwargs())
+    ax.set_title(title, **_font_kwargs())
     ax.grid(True, alpha=0.25)
     fig.tight_layout()
     fig.savefig(path)

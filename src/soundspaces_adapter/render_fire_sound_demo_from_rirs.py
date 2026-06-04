@@ -27,6 +27,9 @@ if str(ROOT) not in sys.path:
 
 from soundspaces_adapter.analyze_rir_impulse_probe import mono_rir_from_foa, normalize_rir_shape
 from soundspaces_adapter.render_flat_spectrum_probe import (
+    SPECTROGRAM_DB_VMAX,
+    SPECTROGRAM_DB_VMIN,
+    _font_kwargs,
     log_mel_spectrogram,
     save_log_mel_plot,
     save_spectrum_plot,
@@ -40,7 +43,16 @@ DEFAULT_INPUT_DIR = Path(
     "generated_soundspaces_runs/"
     "six_scene_impulse_probe_material_path_fixed_ceiling_acoustic_tile_rays50000_500ms_edc_split_rir_rt60"
 )
-DEFAULT_FIRE_AUDIO = Path("git_version/examples/test_audio_bank/esc50_crackling_fire.wav")
+DEFAULT_FIRE_AUDIO = Path("examples/test_audio_bank/esc50_crackling_fire.wav")
+
+SCENE_TITLES_CN = {
+    "baffle_room": "挡板房间",
+    "l_shape_corridor": "L形走廊",
+    "t_shape_corridor": "T形走廊",
+    "empty_room": "空房间",
+    "open_field": "开放场地",
+    "obstacle_forest": "障碍物场景",
+}
 
 
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
@@ -148,12 +160,12 @@ def save_delta_log_mel_plot(
         aspect="auto",
         extent=(0.0, duration_s, 0, n_mels),
         cmap="coolwarm",
-        vmin=-30.0,
-        vmax=30.0,
+        vmin=SPECTROGRAM_DB_VMIN,
+        vmax=SPECTROGRAM_DB_VMAX,
     )
-    ax.set_xlabel("Time (s)")
-    ax.set_ylabel("Mel bin")
-    ax.set_title(title)
+    ax.set_xlabel("Time (s)", **_font_kwargs())
+    ax.set_ylabel("Mel bin", **_font_kwargs())
+    ax.set_title(title, **_font_kwargs())
     fig.colorbar(image, ax=ax, label="Receiver - source log-Mel (dB)")
     fig.tight_layout()
     fig.savefig(path)
@@ -213,7 +225,7 @@ def main(argv: list[str] | None = None) -> int:
             source_10s,
             args.sample_rate,
             figure_dir / "fire_source_10s_logmel.png",
-            "Fire source log-Mel",
+            "火灾声发射信号 log-Mel",
             args.stft_n_fft,
             args.stft_hop_length,
             args.mel_bins,
@@ -237,17 +249,18 @@ def main(argv: list[str] | None = None) -> int:
         sf.write(foa_path, foa, args.sample_rate)
 
         if not args.no_plots:
+            scene_title = SCENE_TITLES_CN.get(str(row["scene_type"]), str(row["scene_type"]))
             save_spectrum_plot(
                 receiver,
                 args.sample_rate,
                 figure_dir / f"{case_id}_fire_receiver_spectrum.png",
-                f"{row['scene_type']} fire receiver spectrum",
+                f"{scene_title}火灾声接收信号频谱",
             )
             save_log_mel_plot(
                 receiver,
                 args.sample_rate,
                 figure_dir / f"{case_id}_fire_receiver_logmel.png",
-                f"{row['scene_type']} fire receiver log-Mel",
+                f"{scene_title}火灾声接收信号 log-Mel",
                 args.stft_n_fft,
                 args.stft_hop_length,
                 args.mel_bins,
@@ -257,14 +270,14 @@ def main(argv: list[str] | None = None) -> int:
                 receiver,
                 args.sample_rate,
                 figure_dir / f"{case_id}_fire_receiver_source_transfer.png",
-                f"{row['scene_type']} fire receiver/source transfer",
+                f"{scene_title}火灾声接收/发射幅度传递",
             )
             save_delta_log_mel_plot(
                 source_10s,
                 receiver,
                 args.sample_rate,
                 figure_dir / f"{case_id}_fire_receiver_minus_source_logmel.png",
-                f"{row['scene_type']} fire receiver - source log-Mel",
+                f"{scene_title}火灾声接收信号 - 发射信号 log-Mel",
                 args.stft_n_fft,
                 args.stft_hop_length,
                 args.mel_bins,
